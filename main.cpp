@@ -4,7 +4,8 @@ using namespace std;
 void FillRand(int arr[], const int n);
 void Print(int arr[], const int n);
 void PushBack(int *&arr, const int n, const int number);
-void PushFront(int*& arr, const int n, const int number);
+void PushFront(int*& arr, const int n, const int number_front);
+void Insert(int*& arr, const int n, const int number_index, const int index);
 
 
 void main()
@@ -30,6 +31,9 @@ void main()
 
 #ifdef PUSH_FRONT
 
+	//-------------------------------------------------------------------------
+	// Добавляем элемент в начало массива
+
 	int number_front;
 	cout << "Введите число, добавляемое в начало: "; cin >> number_front;
 	PushFront(arr, n, number_front);
@@ -38,6 +42,15 @@ void main()
 
 #endif //PUSH_FRONT
 
+	//-------------------------------------------------------------------------
+	// Добавляем значение по указанному индексу
+
+	int number_index, index;
+	cout << "Введите число, которое вы хотите добавить"; cin >> number_index;
+	cout << "Введите номер положения числа в массиве ,куда вы хотите его добавить от 1 до " << n << " :"; cin >> index;
+	Insert(arr, n, number_index, index);
+	n++;
+	Print(arr, n);
 	
 	delete[] arr;
 }
@@ -72,13 +85,33 @@ void PushBack(int*& arr, const int n, const int number)
 	//cout << &arr << endl; //проверка адреса массива - УСПЕШНО, работаем именно с одним и тем же массивом
 }
 
-void PushFront(int*& arr, const int n, const int number)
+void PushFront(int*& arr, const int n, const int number_index)
 {
 	int* buffer = new int[n + 1];
-	buffer[0] = number;
+	buffer[0] = number_index;
 	for (int i = 0; i < n; i++)
 	{
 		buffer[i + 1] = arr[i];
+	}
+	delete[] arr;
+	arr = buffer;
+	buffer = nullptr;
+}
+
+void Insert(int*& arr, const int n, const int number_index, const int index)
+{
+	int* buffer = new int[n + 1];
+	bool exam = true;
+	for (int i = 0, j = 0; i < n; i++, j++)
+	{
+		if ((i == index - 1)&&exam)
+		{
+			buffer[j] = number_index;
+			i--;
+			exam = false;
+			continue;
+		}
+		else buffer[j] = arr[i];
 	}
 	delete[] arr;
 	arr = buffer;
