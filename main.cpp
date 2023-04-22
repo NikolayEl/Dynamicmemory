@@ -1,11 +1,12 @@
 ﻿#include <iostream>
 using namespace std;
 
-//#define PUSH_BACK
-//#define PUSH_FRONT
-//#define INSERT
-//#define POP_BACK
-//#define POP_FRONT
+#define PUSH_BACK
+#define PUSH_FRONT
+#define INSERT
+#define POP_BACK
+#define POP_FRONT
+#define ERASE
 
 void FillRand(int arr[], const int n);
 void Print(int arr[], const int n);
@@ -14,6 +15,7 @@ void PushFront(int*& arr, int& n, const int number_front);
 void Insert(int*& arr, int& n, const int number_index, const int index);
 void PopBack(int*& arr, int& n);
 void PopFront(int*& arr, int& n);
+void Erase(int*& arr, int& n, const int index);
 
 
 void main()
@@ -35,7 +37,8 @@ void main()
 	cout << "Введите добавляемый элемент: "; cin >> value;
 	PushBack(arr, n, value);
 	//cout << &arr << endl; //проверка адреса массива - УСПЕШНО, работаем именно с одним и тем же массивом
-	Print(arr, n); 
+	cout << "Добавили в конец массива число " << value << ":" << endl;
+	Print(arr, n); cout << endl;
 #endif //PUSH_BACK
 
 #ifdef PUSH_FRONT
@@ -46,7 +49,8 @@ void main()
 	int number_front;
 	cout << "Введите число, добавляемое в начало: "; cin >> number_front;
 	PushFront(arr, n, number_front);
-	Print(arr, n);
+	cout << "Добавили в начало массива число " << number_front << ":" << endl;
+	Print(arr, n); cout << endl;
 
 #endif //PUSH_FRONT
 
@@ -59,7 +63,8 @@ void main()
 	cout << "Введите число, которое вы хотите добавить: "; cin >> number_index;
 	cout << "Введите номер положения числа в массиве ,куда вы хотите его добавить от 1 до " << n << " :"; cin >> index;
 	Insert(arr, n, number_index, index);
-	Print(arr, n);
+	cout << "Добавили число " << number_index << " по индексу " << index << ":" << endl;
+	Print(arr, n); cout << endl;
 
 #endif //INSERT
 
@@ -67,7 +72,8 @@ void main()
 	//-------------------------------------------------------------------------
 	// Удаляем последний элемент массива
 	PopBack(arr, n);
-	Print(arr, n);
+	cout << "Удалили последний элемент массива:" << endl;
+	Print(arr, n); cout << endl;
 
 #endif //POP_BACK
 
@@ -75,10 +81,20 @@ void main()
 	//--------------------------------------------------------------------------
 	// Удаляем нулевой элемент массива
 	PopFront(arr, n);
+	cout << "Удалили нулевой элемент массива:" << endl;
 	Print(arr, n);
 
 #endif // POP_FRONT
 	
+#ifdef ERASE
+	//--------------------------------------------------------------------------
+	// Удаляем элемент из массива по указанному индексу
+	int index_erase;
+	cout << "Укажите индекс удаляемого числа (от 1 до 5): "; cin >> index_erase;
+	Erase(arr, n, index_erase);
+	cout << "Удалили число по индексу " << index_erase << ":" << endl;
+	Print(arr, n); cout << endl;
+#endif //ERASE
 	delete[] arr;
 }
 
@@ -164,7 +180,7 @@ void PopBack(int*& arr, int& n)
 
 void PopFront(int*& arr, int& n)
 {
-	int* buffer = new int[n];
+	int* buffer = new int[n - 1];
 	for (int i = 0; i < n - 1; i++)
 	{
 		buffer[i] = arr[i + 1];
@@ -174,4 +190,25 @@ void PopFront(int*& arr, int& n)
 	buffer = nullptr;
 	n--;
 	//cout << arr[n] << endl; //Проверка что первый элемент действительно удален и в памяти больше нет чисел из массива!
+}
+
+void Erase(int*& arr, int& n, const int index)
+{
+	int* buffer = new int[n - 1];
+	bool exam = true;
+	for (int i = 0, j = 0; i < n; i++, j++)
+	{
+		if ((i == index - 1) && exam) 
+		{
+			exam = false;
+			j--;
+			continue;
+		}
+		buffer[j] = arr[i];
+	}
+	delete[] arr;
+	arr = buffer;
+	buffer = nullptr;
+	n--;
+	//cout << arr[n] << endl; //Проверка что выбранный элемент действительно удален и в памяти больше нет чисел из массива!
 }
