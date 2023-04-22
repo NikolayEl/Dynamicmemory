@@ -1,11 +1,17 @@
 ﻿#include <iostream>
 using namespace std;
 
+//#define PUSH_BACK
+//#define PUSH_FRONT
+//#define INSERT
+//#define POP_BACK
+
 void FillRand(int arr[], const int n);
 void Print(int arr[], const int n);
-void PushBack(int *&arr, const int n, const int number);
-void PushFront(int*& arr, const int n, const int number_front);
-void Insert(int*& arr, const int n, const int number_index, const int index);
+void PushBack(int *&arr, int& n, const int number);
+void PushFront(int*& arr, int& n, const int number_front);
+void Insert(int*& arr, int& n, const int number_index, const int index);
+void PopBack(int*& arr, int& n);
 
 
 void main()
@@ -15,7 +21,9 @@ void main()
 	cout << "Введите размер массива: "; cin >> n;
 	int* arr = new int[n];
 	FillRand(arr, n);
+	cout << "Исходный массив:" << endl;
 	Print(arr, n);
+	cout << "Конец исходного массива" << endl << endl;
 
 #ifdef PUSH_BACK
 
@@ -25,7 +33,6 @@ void main()
 	cout << "Введите добавляемый элемент: "; cin >> value;
 	PushBack(arr, n, value);
 	//cout << &arr << endl; //проверка адреса массива - УСПЕШНО, работаем именно с одним и тем же массивом
-	n++;
 	Print(arr, n); 
 #endif //PUSH_BACK
 
@@ -37,20 +44,31 @@ void main()
 	int number_front;
 	cout << "Введите число, добавляемое в начало: "; cin >> number_front;
 	PushFront(arr, n, number_front);
-	n++;
 	Print(arr, n);
 
 #endif //PUSH_FRONT
 
+
+#ifdef INSERT
 	//-------------------------------------------------------------------------
 	// Добавляем значение по указанному индексу
 
 	int number_index, index;
-	cout << "Введите число, которое вы хотите добавить"; cin >> number_index;
+	cout << "Введите число, которое вы хотите добавить: "; cin >> number_index;
 	cout << "Введите номер положения числа в массиве ,куда вы хотите его добавить от 1 до " << n << " :"; cin >> index;
 	Insert(arr, n, number_index, index);
-	n++;
 	Print(arr, n);
+
+#endif //INSERT
+
+#ifdef POP_BACK
+	//-------------------------------------------------------------------------
+	// Удаляем последний элемент массива
+	PopBack(arr, n);
+	Print(arr, n);
+
+#endif //POP_BACK
+
 	
 	delete[] arr;
 }
@@ -71,7 +89,7 @@ void Print(int arr[], const int n)
 	cout << endl;
 }
 
-void PushBack(int*& arr, const int n, const int number)
+void PushBack(int*& arr, int& n, const int number)
 {
 	int* buffer = new int[n + 1];
 	for (int i = 0; i < n; i++)
@@ -82,10 +100,11 @@ void PushBack(int*& arr, const int n, const int number)
 	arr = buffer;
 	buffer = nullptr;
 	arr[n] = number;
+	n++;
 	//cout << &arr << endl; //проверка адреса массива - УСПЕШНО, работаем именно с одним и тем же массивом
 }
 
-void PushFront(int*& arr, const int n, const int number_index)
+void PushFront(int*& arr, int& n, const int number_index)
 {
 	int* buffer = new int[n + 1];
 	buffer[0] = number_index;
@@ -96,9 +115,10 @@ void PushFront(int*& arr, const int n, const int number_index)
 	delete[] arr;
 	arr = buffer;
 	buffer = nullptr;
+	n++;
 }
 
-void Insert(int*& arr, const int n, const int number_index, const int index)
+void Insert(int*& arr, int& n, const int number_index, const int index)
 {
 	int* buffer = new int[n + 1];
 	bool exam = true;
@@ -116,4 +136,19 @@ void Insert(int*& arr, const int n, const int number_index, const int index)
 	delete[] arr;
 	arr = buffer;
 	buffer = nullptr;
+	n++;
+}
+
+void PopBack(int*& arr, int& n)
+{
+	int* buffer = new int[n - 1];
+	for (int i = 0; i < n - 1; i++)
+	{
+		buffer[i] = arr[i];
+	}
+	delete[] arr;
+	arr = buffer;
+	buffer = nullptr;
+	n--;
+	//cout << arr[n] << endl; //Проверка что последний элемент действительно удален!
 }
