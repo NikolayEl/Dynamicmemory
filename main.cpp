@@ -5,6 +5,7 @@ using namespace std;
 //#define PUSH_FRONT
 //#define INSERT
 //#define POP_BACK
+//#define POP_FRONT
 
 void FillRand(int arr[], const int n);
 void Print(int arr[], const int n);
@@ -12,6 +13,7 @@ void PushBack(int *&arr, int& n, const int number);
 void PushFront(int*& arr, int& n, const int number_front);
 void Insert(int*& arr, int& n, const int number_index, const int index);
 void PopBack(int*& arr, int& n);
+void PopFront(int*& arr, int& n);
 
 
 void main()
@@ -69,6 +71,13 @@ void main()
 
 #endif //POP_BACK
 
+#ifdef POP_FRONT
+	//--------------------------------------------------------------------------
+	// Удаляем нулевой элемент массива
+	PopFront(arr, n);
+	Print(arr, n);
+
+#endif // POP_FRONT
 	
 	delete[] arr;
 }
@@ -151,4 +160,18 @@ void PopBack(int*& arr, int& n)
 	buffer = nullptr;
 	n--;
 	//cout << arr[n] << endl; //Проверка что последний элемент действительно удален!
+}
+
+void PopFront(int*& arr, int& n)
+{
+	int* buffer = new int[n];
+	for (int i = 0; i < n - 1; i++)
+	{
+		buffer[i] = arr[i + 1];
+	}
+	delete[] arr;
+	arr = buffer;
+	buffer = nullptr;
+	n--;
+	//cout << arr[n] << endl; //Проверка что первый элемент действительно удален и в памяти больше нет чисел из массива!
 }
