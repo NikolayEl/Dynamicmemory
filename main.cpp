@@ -1,15 +1,25 @@
 ﻿#include <iostream>
 using namespace std;
 
-#define PUSH_BACK
-#define PUSH_FRONT
-#define INSERT
-#define POP_BACK
-#define POP_FRONT
-#define ERASE
+const int ROWS = 3;
+const int COLS = 4;
+
+//#define PUSH_BACK
+//#define PUSH_FRONT
+//#define INSERT
+//#define POP_BACK
+//#define POP_FRONT
+//#define ERASE
+#define FILLRAND_DUAL
 
 void FillRand(int arr[], const int n);
+
+void FillRand(int arr[ROWS][COLS], const int ROWS, const int COLS);
+
 void Print(int arr[], const int n);
+
+void Print(int arr[ROWS][COLS], const int ROWS, const int COLS);
+
 void PushBack(int *&arr, int& n, const int number);
 void PushFront(int*& arr, int& n, const int number_front);
 void Insert(int*& arr, int& n, const int number_index, const int index);
@@ -96,6 +106,15 @@ void main()
 	Print(arr, n); cout << endl;
 #endif //ERASE
 	delete[] arr;
+
+#ifdef FILLRAND_DUAL
+
+	int* arr_dual = new int;
+
+	FillRand(arr_dual, ROWS, COLS);
+	Print(arr_dual, ROWS, COLS);
+
+#endif FILLRAND_DUAL
 }
 
 void FillRand(int arr[], const int n)
@@ -105,6 +124,18 @@ void FillRand(int arr[], const int n)
 		*(arr + i) = rand() % 100;
 	}
 }
+
+void FillRand(int arr[ROWS][COLS], const int ROWS, const int COLS)
+{
+	for (int i = 0; i < ROWS; i++)
+	{
+		for (int j = 0; j < COLS; j++)
+		{
+			arr[i][j] = rand() % 12;
+		}
+	}
+}
+
 void Print(int arr[], const int n)
 {
 	for (int i = 0; i < n; i++)
@@ -112,6 +143,20 @@ void Print(int arr[], const int n)
 		cout << arr[i] << "\t";
 	}
 	cout << endl;
+}
+
+void Print(int arr[ROWS][COLS], const int ROWS, const int COLS)
+{
+	{
+		for (int i = 0; i < ROWS; i++)
+		{
+			for (int j = 0; j < COLS; j++)
+			{
+				cout << arr[ROWS][COLS] << " ";
+			}
+			cout << endl;
+		}
+	}
 }
 
 void PushBack(int*& arr, int& n, const int number)
