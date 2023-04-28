@@ -14,11 +14,11 @@ const int COLS = 4;
 
 void FillRand(int arr[], const int n);
 
-void FillRand(int arr[ROWS][COLS], const int ROWS, const int COLS);
+void FillRand(int** arr, const int ROWS, const int COLS);
 
 void Print(int arr[], const int n);
 
-void Print(int arr[ROWS][COLS], const int ROWS, const int COLS);
+void Print(int** arr, const int ROWS, const int COLS);
 
 void PushBack(int *&arr, int& n, const int number);
 void PushFront(int*& arr, int& n, const int number_front);
@@ -31,13 +31,14 @@ void Erase(int*& arr, int& n, const int index);
 void main()
 {
 	setlocale(LC_ALL, "");
-	int n;
-	cout << "Введите размер массива: "; cin >> n;
-	int* arr = new int[n];
-	FillRand(arr, n);
-	cout << "Исходный массив:" << endl;
-	Print(arr, n);
-	cout << "Конец исходного массива" << endl << endl;
+	//int n;
+	//cout << "Введите размер массива: "; cin >> n;
+	//int* arr = new int[n];
+	//FillRand(arr, n);
+	//cout << "Исходный массив:" << endl;
+	//Print(arr, n);
+	//cout << "Конец исходного массива" << endl << endl;
+
 
 #ifdef PUSH_BACK
 
@@ -104,15 +105,27 @@ void main()
 	Erase(arr, n, index_erase);
 	cout << "Удалили число по индексу " << index_erase << ":" << endl;
 	Print(arr, n); cout << endl;
-#endif //ERASE
+
 	delete[] arr;
+#endif //ERASE
 
 #ifdef FILLRAND_DUAL
 
-	int* arr_dual = new int;
+	int rows, cols;
+	cout << "Введите кол-во строк: "; cin >> rows;
+	cout << "Введите кол-во столбцов: "; cin >> cols;
 
-	FillRand(arr_dual, ROWS, COLS);
-	Print(arr_dual, ROWS, COLS);
+	int** arr_dual = new int* [rows];
+	for (int i = 0; i < rows; i++)
+	{
+		arr_dual[i] = new int[cols];
+	}
+
+	FillRand(arr_dual, rows, cols);
+	Print(arr_dual, rows, cols);
+
+	for (int i = 0; i < rows; i++) delete[] arr_dual[i];
+	delete[] arr_dual;
 
 #endif FILLRAND_DUAL
 }
@@ -125,14 +138,12 @@ void FillRand(int arr[], const int n)
 	}
 }
 
-void FillRand(int arr[ROWS][COLS], const int ROWS, const int COLS)
+void FillRand(int** arr_dual, const int ROWS, const int COLS)
 {
+	
 	for (int i = 0; i < ROWS; i++)
 	{
-		for (int j = 0; j < COLS; j++)
-		{
-			arr[i][j] = rand() % 12;
-		}
+		for (int j = 0; j < COLS; j++)arr_dual[i][j] = rand() % 12;
 	}
 }
 
@@ -145,18 +156,18 @@ void Print(int arr[], const int n)
 	cout << endl;
 }
 
-void Print(int arr[ROWS][COLS], const int ROWS, const int COLS)
+void Print(int** arr_dual, const int ROWS, const int COLS)
 {
+	for (int i = 0; i < ROWS; i++)
 	{
-		for (int i = 0; i < ROWS; i++)
+		for (int j = 0; j < COLS; j++)
 		{
-			for (int j = 0; j < COLS; j++)
-			{
-				cout << arr[ROWS][COLS] << " ";
-			}
-			cout << endl;
+			cout << arr_dual[i][j] << " ";
 		}
+		cout << endl;
 	}
+		
+	
 }
 
 void PushBack(int*& arr, int& n, const int number)
