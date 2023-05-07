@@ -1,8 +1,6 @@
 ﻿#include <iostream>
 using namespace std;
 
-const int ROWS = 3;
-const int COLS = 4;
 
 //#define PUSH_BACK
 //#define PUSH_FRONT
@@ -10,17 +8,26 @@ const int COLS = 4;
 //#define POP_BACK
 //#define POP_FRONT
 //#define ERASE
-#define POINTER_ARITHMETIC
+//#define POINTER_ARITHMETIC
+//#define ALLOCATE
+//define CLEAR
+#define PUSH_ROW_BACK
+
+int** Allocate(const int ROWS, const int COLS);
+void Clear(int** arr_dual, const int ROWS);
 
 void FillRand(int arr[], const int n);
 
-void FillRand(int** arr, const int ROWS, const int COLS);
+void FillRand(int** arr, int ROWS, const int COLS);
 
 void Print(int arr[], const int n);
 
 void Print(int** arr, const int ROWS, const int COLS);
 
 void PushBack(int *&arr, int& n, const int number);
+
+int** Push_Row_Back(int** &arr_dual, int &ROWS, const int COLS);
+
 void PushFront(int*& arr, int& n, const int number_front);
 void Insert(int*& arr, int& n, const int number_index, const int index);
 void PopBack(int*& arr, int& n);
@@ -109,9 +116,10 @@ void main()
 	delete[] arr;
 #endif //ERASE
 
+	//---------------------------------------------------------------------------------------------------------------
+	// Двумерные динамические массивы
 
-
-	int rows = 3, cols = 4, k = 0, l = 0;
+	int rows = 3, cols = 4;
 	//cout << "Введите кол-во строк: "; cin >> rows;
 	//cout << "Введите кол-во столбцов: "; cin >> cols;
 	
@@ -127,10 +135,11 @@ void main()
 	// -------------------------------------------------------------------------------------------------------------
 	// Вывод при помощи арифметики указателей
 	cout << "Вывод при помощи арифметики указателей" << endl;
+	int k = 0, l = 0;
 	for (int i = 0; i < rows; i++)
 	{
-		if (i == 1)k = (&arr_dual[1][0] - &arr_dual[0][0]);  //так как между двумя строками значение не постоянное, вычисляем ег ов переменную
-		if (i == 2)l = (&arr_dual[2][0] - &arr_dual[1][0]);  //так как между 2 и 3 строкой значение не равное разгницы между 1 и 2 строкой, вычисляем его так же отдельно
+		if (i == 1)k = (&arr_dual[1][0] - &arr_dual[0][0]);  //так как между двумя строками разница не постоянная, вычисляем её и записываем в переменную
+		if (i == 2)l = (&arr_dual[2][0] - &arr_dual[1][0]);  //так как между 2 и 3 строкой разница не равна разнице между 1 и 2 строкой, вычисляем её так же отдельно
 		for (int j = 0; j < cols; j++)
 		{
 			cout << *(*arr_dual + k + l + j) << " ";
@@ -139,7 +148,49 @@ void main()
 	}
 #endif POINTER_ARITHMETIC
 
-	delete[] arr_dual;
+#ifdef ALLOCATE
+	// -------------------------------------------------------------------------------------------------------------
+	// Проверка функции Allocate
+	int** arr_dual2 = Allocate(rows, cols);
+	FillRand(arr_dual2, rows, cols);
+	Print(arr_dual2, rows, cols);
+	Clear (arr_dual2, rows);
+
+#endif ALLOCATE
+
+#ifdef CLEAR
+
+	Clear(arr_dual, rows);
+	Print(arr_dual, rows, cols);
+
+#endif CLEAR
+
+#ifdef PUSH_ROW_BACK
+	// ---------------------------------------------------------------------------------------------------------
+	// Добавляем в конец пустую строку
+	cout << endl << "Добавляем в конец динамического массива пустую строку" << endl;
+	arr_dual = Push_Row_Back(arr_dual, rows, cols);
+	Print(arr_dual, rows, cols);
+
+#endif PUSH_ROW_BACK
+	Clear(arr_dual, rows);
+}
+int** Allocate(const int ROWS, const int COLS)
+{
+	int** arr_dual = new int* [ROWS];
+	for (int i = 0; i < ROWS; i++)
+	{
+		arr_dual[i] = new int[COLS];
+	}
+	return arr_dual;
+}
+
+void Clear(int** arr_dual, const int ROWS)
+{
+	for (int i = 0; i < ROWS; i++)
+	{
+		delete[] arr_dual[i];
+	}delete[] arr_dual;
 }
 
 void FillRand(int arr[], const int n)
@@ -195,6 +246,21 @@ void PushBack(int*& arr, int& n, const int number)
 	arr[n] = number;
 	n++;
 	//cout << &arr << endl; //проверка адреса массива - УСПЕШНО, работаем именно с одним и тем же массивом
+}
+
+int** Push_Row_Back(int** &arr_dual, int &ROWS, const int COLS)
+{
+	int** buffer = Allocate(++ROWS, COLS);
+	for (int i = 0; i < ROWS - 1; i++)
+	{
+		for (int j = 0; j < COLS; j++)
+		{
+			buffer[i][j] = arr_dual[i][j];
+		}
+	}
+	for (int i = 0; i < COLS; i++)buffer[ROWS -1][i] = 0;
+	Clear(arr_dual, ROWS - 1);
+	return buffer;
 }
 
 void PushFront(int*& arr, int& n, const int number_index)
