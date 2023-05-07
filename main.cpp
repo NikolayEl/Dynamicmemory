@@ -20,7 +20,8 @@ using namespace std;
 //#define POP_ROW_BACK
 //#define POP_COLS_BACK
 //#define POP_ROW_FRONT
-#define POP_COLS_FRONT
+//#define POP_COLS_FRONT
+#define ERASE_ROW
 
 
 int** Allocate(const int ROWS, const int COLS);
@@ -61,6 +62,8 @@ int** Pop_Row_Front(int**& arr_dual, int& ROWS, const int COLS);
 int** Pop_Cols_Front(int**& arr_dual, const int ROWS, int& COLS);
 
 void Erase(int*& arr, int& n, const int index);
+
+int** Erase_Row(int**& arr_dual, int& ROWS, const int COLS, const int index);
 
 
 void main()
@@ -292,6 +295,18 @@ void main()
 	Print(arr_dual, rows, cols);
 
 #endif POP_COLS_FRONT
+
+#ifdef ERASE_ROW
+	//------------------------------------------------------------------------------------------------------------------
+	// удаляет строку из двумерного динамического массива по заданному индексу
+	cout << endl << "Удаляем строку из двумерного динамического массива по заданному индексу" << endl;
+
+	int index_rows;
+	cout << "Укажите индекс строки, которую хотите удалить от 0 до " << rows - 1 << ": "; cin >> index_rows;
+	arr_dual = Erase_Row(arr_dual, rows, cols, index_rows);
+	Print(arr_dual, rows, cols);
+
+#endif ERASE_ROW
 
 	Clear(arr_dual, rows);
 }
@@ -605,4 +620,20 @@ void Erase(int*& arr, int& n, const int index)
 	buffer = nullptr;
 	n--;
 	//cout << arr[n] << endl; //Проверка что выбранный элемент действительно удален и в памяти больше нет чисел из массива!
+}
+
+int** Erase_Row(int**& arr_dual, int& ROWS, const int COLS, const int index)
+{
+	int** buffer = Allocate(--ROWS, COLS);
+	int temp = 0;
+	for (int i = 0; i < ROWS; i++)
+	{
+		for (int j = 0; j < COLS; j++)
+		{
+			if (i >= index) temp = 1;
+			buffer[i][j] = arr_dual[i + temp][j];
+		}
+	}
+	Clear(arr_dual, ROWS + 1);
+	return buffer;
 }
