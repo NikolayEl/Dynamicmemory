@@ -21,7 +21,8 @@ using namespace std;
 //#define POP_COLS_BACK
 //#define POP_ROW_FRONT
 //#define POP_COLS_FRONT
-#define ERASE_ROW
+//#define ERASE_ROW
+#define ERASE_COLS
 
 
 int** Allocate(const int ROWS, const int COLS);
@@ -64,6 +65,7 @@ int** Pop_Cols_Front(int**& arr_dual, const int ROWS, int& COLS);
 void Erase(int*& arr, int& n, const int index);
 
 int** Erase_Row(int**& arr_dual, int& ROWS, const int COLS, const int index);
+int** Erase_Cols(int**& arr_dual, const int ROWS, int& COLS, const int index);
 
 
 void main()
@@ -307,6 +309,18 @@ void main()
 	Print(arr_dual, rows, cols);
 
 #endif ERASE_ROW
+
+#ifdef ERASE_COLS
+	//--------------------------------------------------------------------------------------------------------
+	//удаляет столбец из двумерного динамического массива по заданному индексу
+	cout << endl << "Удаляем столбец из двумерного динамического массива по заданному индексу" << endl;
+
+	int index_cols;
+	cout << "Введите индекс удаляемого столбца из двумерного динамического массива от 0 до " << cols - 1 << " : "; cin >> index_cols;
+	arr_dual = Erase_Cols(arr_dual, rows, cols, index_cols);
+	Print(arr_dual, rows, cols);
+
+#endif ERASE_COLS
 
 	Clear(arr_dual, rows);
 }
@@ -635,5 +649,22 @@ int** Erase_Row(int**& arr_dual, int& ROWS, const int COLS, const int index)
 		}
 	}
 	Clear(arr_dual, ROWS + 1);
+	return buffer;
+}
+
+int** Erase_Cols(int**& arr_dual, const int ROWS, int& COLS, const int index)
+{
+	int** buffer = Allocate(ROWS, --COLS);
+	int temp = 0;
+	for (int i = 0; i < ROWS; i++)
+	{
+		for (int j = 0; j < COLS; j++)
+		{
+			if (j >= index) temp = 1;
+			if (j == 0 && i != 0 && j < index) temp = 0;
+			buffer[i][j] = arr_dual[i][j + temp];
+		}
+	}
+	Clear(arr_dual, ROWS);
 	return buffer;
 }
