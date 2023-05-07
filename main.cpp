@@ -12,9 +12,11 @@ using namespace std;
 //#define ALLOCATE
 //#define CLEAR
 //#define PUSH_ROW_BACK
-//#define POP_ROW_BACK
 //#define PUSH_COL_BACK
+//#define PUSH_ROW_FRONT
 //#define PUSH_COL_FRONT
+//#define INSERT_ROW
+#define INSERT_COL
 
 int** Allocate(const int ROWS, const int COLS);
 void Clear(int** &arr_dual, const int ROWS);
@@ -30,16 +32,20 @@ void Print(int** arr, const int ROWS, const int COLS);
 void PushBack(int *&arr, int& n, const int number);
 
 int** Push_Row_Back(int** &arr_dual, int &ROWS, const int COLS);
+int** Push_Col_Back(int**& arr_dual, const int ROWS, int& COLS);
 
 void PushFront(int*& arr, int& n, const int number_front);
 
 int** Push_Row_Front(int**& arr_dual, int& ROWS, const int COLS);
 int** Push_Col_Front(int**& arr_dual, const int COLS, int& ROWS);
 
-void Insert(int*& arr, int& n, const int number_index, const int index);
-void PopBack(int*& arr, int& n);
 
-int** Push_Col_Back(int**& arr_dual, const int ROWS, int& COLS);
+void Insert(int*& arr, int& n, const int number_index, const int index);
+
+int** Insert_Row(int**& arr_dual, int& ROWS, const int COLS, const int index);
+int** Insert_Col(int**& arr_dual, const int ROWS, int& COLS, const int index);
+
+void PopBack(int*& arr, int& n);
 
 void PopFront(int*& arr, int& n);
 
@@ -195,7 +201,7 @@ void main()
 	arr_dual = Push_Col_Back(arr_dual, rows, cols);
 	Print(arr_dual, rows, cols);
 
-#endif POP_ROW_BACK
+#endif PUSH_COL_BACK
 
 #ifdef PUSH_ROW_FRONT
 	//------------------------------------------------------------------------------------------------------------
@@ -216,6 +222,31 @@ void main()
 	Print(arr_dual, rows, cols);
 
 #endif PUSH_COL_FRONT
+
+#ifdef INSERT_ROW
+	//----------------------------------------------------------------------------------------------------------
+	// вставляет пустую строку в двумерный динамический массив по заданному индексу
+	cout << endl << "Вставляем пустую строку в двумерный динамический массив по заданному индексу" << endl;
+
+	int index_row;
+	cout << "Задайте индекс строки от 0 до " << rows << ": "; cin >> index_row; //Так как мы можем вставить в самый конец массива, потому мы пишем rows целиком (без вычетания)
+	arr_dual = Insert_Row(arr_dual, rows, cols, index_row);
+	Print(arr_dual, rows, cols);
+
+
+#endif INSER_ROW
+
+#ifdef INSERT_COL
+	//---------------------------------------------------------------------------------------------
+	// вставляет пустой столбец в двумерный динамический массив по заданному индексу
+	cout << endl << "Вставляем пустой столбец в двумерный динамический массив по заданному индексу" << endl;
+
+	int index_col;
+	cout << "Укажите индекс куда будем вставлять столбец от 0 до " << cols << ": "; cin >> index_col;
+	arr_dual = Insert_Col(arr_dual, rows, cols, index_col);
+	Print(arr_dual, rows, cols);
+
+#endif INSER_COL
 
 	Clear(arr_dual, rows);
 }
@@ -374,6 +405,41 @@ void Insert(int*& arr, int& n, const int number_index, const int index)
 	arr = buffer;
 	buffer = nullptr;
 	n++;
+}
+
+int** Insert_Row(int**& arr_dual, int& ROWS, const int COLS, const int index)
+{
+	int** buffer = Allocate(++ROWS, COLS);
+	int temp = 0;
+	for (int i = 0; i < COLS; i++)buffer[index][i] = 0;
+	for (int i = 0; i < ROWS - 1; i++)
+	{
+		for (int j = 0; j < COLS; j++)
+		{
+			if (i >= index)temp = 1;
+			buffer[i + temp][j] = arr_dual[i][j];
+		}
+	}
+	Clear(arr_dual, ROWS - 1);
+	return buffer;
+}
+
+int** Insert_Col(int**& arr_dual, const int ROWS, int& COLS, const int index)
+{
+	int** buffer = Allocate(ROWS, ++COLS);
+	int temp = 0;
+	for (int i = 0; i < ROWS; i++)buffer[i][index] = 0;
+	for (int i = 0; i < ROWS; i++)
+	{
+		for (int j = 0; j < COLS - 1; j++)
+		{
+			if (j >= index)temp = 1;
+			if (j == 0 && i != 0 && j < index) temp = 0;
+			buffer[i][j + temp] = arr_dual[i][j];
+		}
+	}
+	Clear(arr_dual, ROWS);
+	return buffer;
 }
 
 void PopBack(int*& arr, int& n)
