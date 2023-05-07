@@ -22,7 +22,7 @@ using namespace std;
 //#define POP_ROW_FRONT
 //#define POP_COLS_FRONT
 //#define ERASE_ROW
-#define ERASE_COLS
+//#define ERASE_COLS
 
 
 int** Allocate(const int ROWS, const int COLS);
