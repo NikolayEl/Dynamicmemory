@@ -13,7 +13,8 @@ using namespace std;
 //#define CLEAR
 //#define PUSH_ROW_BACK
 //#define POP_ROW_BACK
-#define PUSH_ROW_FRONT
+//#define PUSH_ROW_FRONT
+#define PUSH_COL_FRONT
 
 int** Allocate(const int ROWS, const int COLS);
 void Clear(int** &arr_dual, const int ROWS);
@@ -29,7 +30,6 @@ void Print(int** arr, const int ROWS, const int COLS);
 void PushBack(int *&arr, int& n, const int number);
 
 int** Push_Row_Back(int** &arr_dual, int &ROWS, const int COLS);
-int** Pop_Row_Back(int** &arr_dual, const int ROWS, int& COLS);
 
 void PushFront(int*& arr, int& n, const int number_front);
 
@@ -37,7 +37,13 @@ int** Push_Row_Front(int**& arr_dual, int& ROWS, const int COLS);
 
 void Insert(int*& arr, int& n, const int number_index, const int index);
 void PopBack(int*& arr, int& n);
+
+int** Pop_Row_Back(int**& arr_dual, const int ROWS, int& COLS);
+
 void PopFront(int*& arr, int& n);
+
+int** Pop_Col_Front(int**& arr_dual, const int COLS, int& ROWS);
+
 void Erase(int*& arr, int& n, const int index);
 
 
@@ -192,9 +198,17 @@ void main()
 	//------------------------------------------------------------------------------------------------------------
 	// Добавляем пустую строку в начало динамического массива
 
-
+	cout << endl << "Добавляем пустую строку в начало динамического массива" << endl;
+	arr_dual = Push_Row_Front(arr_dual, rows, cols);
+	Print(arr_dual, rows, cols);
 
 #endif PUSH_ROW_FRONT
+
+#ifdef PUSH_COL_FRONT
+	//---------------------------------------------------------------------------------------------------------
+	// добавляет пустой столбец в начало двумерного динамического массива
+
+#endif PUSH_COL_FRONT
 
 	Clear(arr_dual, rows);
 }
@@ -321,7 +335,17 @@ void PushFront(int*& arr, int& n, const int number_index)
 
 int** Push_Row_Front(int**& arr_dual, int& ROWS, const int COLS)
 {
-
+	int** buffer = Allocate(++ROWS, COLS);
+	for (int i = 0; i < ROWS - 1; i++)
+	{
+		for (int j = 0; j < COLS; j++)
+		{
+			buffer[i + 1][j] = arr_dual[i][j];
+		}
+	}
+	for (int i = 0; i < COLS; i++)buffer[0][i] = 0;
+	Clear(arr_dual, ROWS - 1);
+	return buffer;
 }
 
 void Insert(int*& arr, int& n, const int number_index, const int index)
@@ -371,6 +395,11 @@ void PopFront(int*& arr, int& n)
 	buffer = nullptr;
 	n--;
 	//cout << arr[n] << endl; //Проверка что первый элемент действительно удален и в памяти больше нет чисел из массива!
+}
+
+int** Pop_Col_Front(int**& arr_dual, const int COLS, int& ROWS)
+{
+
 }
 
 void Erase(int*& arr, int& n, const int index)
