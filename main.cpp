@@ -10,7 +10,7 @@ const int COLS = 4;
 //#define POP_BACK
 //#define POP_FRONT
 //#define ERASE
-#define FILLRAND_DUAL
+#define POINTER_ARITHMETIC
 
 void FillRand(int arr[], const int n);
 
@@ -109,25 +109,37 @@ void main()
 	delete[] arr;
 #endif //ERASE
 
-#ifdef FILLRAND_DUAL
 
-	int rows, cols;
-	cout << "Введите кол-во строк: "; cin >> rows;
-	cout << "Введите кол-во столбцов: "; cin >> cols;
 
+	int rows = 3, cols = 4, k = 0, l = 0;
+	//cout << "Введите кол-во строк: "; cin >> rows;
+	//cout << "Введите кол-во столбцов: "; cin >> cols;
+	
 	int** arr_dual = new int* [rows];
 	for (int i = 0; i < rows; i++)
 	{
 		arr_dual[i] = new int[cols];
 	}
-
 	FillRand(arr_dual, rows, cols);
 	Print(arr_dual, rows, cols);
 
-	for (int i = 0; i < rows; i++) delete[] arr_dual[i];
-	delete[] arr_dual;
+#ifdef POINTER_ARITHMETIC
+	// -------------------------------------------------------------------------------------------------------------
+	// Вывод при помощи арифметики указателей
+	cout << "Вывод при помощи арифметики указателей" << endl;
+	for (int i = 0; i < rows; i++)
+	{
+		if (i == 1)k = (&arr_dual[1][0] - &arr_dual[0][0]);  //так как между двумя строками значение не постоянное, вычисляем ег ов переменную
+		if (i == 2)l = (&arr_dual[2][0] - &arr_dual[1][0]);  //так как между 2 и 3 строкой значение не равное разгницы между 1 и 2 строкой, вычисляем его так же отдельно
+		for (int j = 0; j < cols; j++)
+		{
+			cout << *(*arr_dual + k + l + j) << " ";
+		}
+		cout << endl;
+	}
+#endif POINTER_ARITHMETIC
 
-#endif FILLRAND_DUAL
+	delete[] arr_dual;
 }
 
 void FillRand(int arr[], const int n)
