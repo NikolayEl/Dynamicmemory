@@ -10,11 +10,13 @@ using namespace std;
 //#define ERASE
 //#define POINTER_ARITHMETIC
 //#define ALLOCATE
-//define CLEAR
-#define PUSH_ROW_BACK
+//#define CLEAR
+//#define PUSH_ROW_BACK
+//#define POP_ROW_BACK
+#define PUSH_ROW_FRONT
 
 int** Allocate(const int ROWS, const int COLS);
-void Clear(int** arr_dual, const int ROWS);
+void Clear(int** &arr_dual, const int ROWS);
 
 void FillRand(int arr[], const int n);
 
@@ -27,8 +29,12 @@ void Print(int** arr, const int ROWS, const int COLS);
 void PushBack(int *&arr, int& n, const int number);
 
 int** Push_Row_Back(int** &arr_dual, int &ROWS, const int COLS);
+int** Pop_Row_Back(int** &arr_dual, const int ROWS, int& COLS);
 
 void PushFront(int*& arr, int& n, const int number_front);
+
+int** Push_Row_Front(int**& arr_dual, int& ROWS, const int COLS);
+
 void Insert(int*& arr, int& n, const int number_index, const int index);
 void PopBack(int*& arr, int& n);
 void PopFront(int*& arr, int& n);
@@ -173,6 +179,23 @@ void main()
 	Print(arr_dual, rows, cols);
 
 #endif PUSH_ROW_BACK
+	
+#ifdef POP_ROW_BACK
+	//------------------------------------------------------------------------------------------------
+	// Добавляем столбец в конец динамического массива
+	arr_dual = Pop_Row_Back(arr_dual, rows, cols);
+	Print(arr_dual, rows, cols);
+
+#endif POP_ROW_BACK
+
+#ifdef PUSH_ROW_FRONT
+	//------------------------------------------------------------------------------------------------------------
+	// Добавляем пустую строку в начало динамического массива
+
+
+
+#endif PUSH_ROW_FRONT
+
 	Clear(arr_dual, rows);
 }
 int** Allocate(const int ROWS, const int COLS)
@@ -185,7 +208,7 @@ int** Allocate(const int ROWS, const int COLS)
 	return arr_dual;
 }
 
-void Clear(int** arr_dual, const int ROWS)
+void Clear(int** &arr_dual, const int ROWS)
 {
 	for (int i = 0; i < ROWS; i++)
 	{
@@ -263,6 +286,25 @@ int** Push_Row_Back(int** &arr_dual, int &ROWS, const int COLS)
 	return buffer;
 }
 
+int** Pop_Row_Back(int**& arr_dual,const int ROWS, int &COLS)
+{
+	int** buffer = Allocate(ROWS, ++COLS);
+	for (int i = 0; i < ROWS; i++)
+	{
+		for (int j = 0; j < COLS; j++)
+		{
+			if (j == COLS - 1)
+			{
+				buffer[i][j] = 0;
+				continue;
+			}
+			buffer[i][j] = arr_dual[i][j];
+		}
+	}
+	Clear(arr_dual, ROWS);
+	return buffer;
+}
+
 void PushFront(int*& arr, int& n, const int number_index)
 {
 	int* buffer = new int[n + 1];
@@ -275,6 +317,11 @@ void PushFront(int*& arr, int& n, const int number_index)
 	arr = buffer;
 	buffer = nullptr;
 	n++;
+}
+
+int** Push_Row_Front(int**& arr_dual, int& ROWS, const int COLS)
+{
+
 }
 
 void Insert(int*& arr, int& n, const int number_index, const int index)
