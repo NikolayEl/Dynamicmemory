@@ -16,7 +16,8 @@ using namespace std;
 //#define PUSH_ROW_FRONT
 //#define PUSH_COL_FRONT
 //#define INSERT_ROW
-#define INSERT_COL
+//#define INSERT_COL
+#define POP_ROW_BACK
 
 int** Allocate(const int ROWS, const int COLS);
 void Clear(int** &arr_dual, const int ROWS);
@@ -46,6 +47,8 @@ int** Insert_Row(int**& arr_dual, int& ROWS, const int COLS, const int index);
 int** Insert_Col(int**& arr_dual, const int ROWS, int& COLS, const int index);
 
 void PopBack(int*& arr, int& n);
+
+int** Pop_Row_Back(int**& arr_dual, int& ROWS, const int COLS);
 
 void PopFront(int*& arr, int& n);
 
@@ -247,6 +250,15 @@ void main()
 	Print(arr_dual, rows, cols);
 
 #endif INSER_COL
+
+#ifdef POP_ROW_BACK
+	//------------------------------------------------------------------------------------
+	// удаляет последнюю строку двумерного динамического массива
+	cout << endl << "Удаляет последнюю строку двумерного динамического массива" << endl;
+	arr_dual = Pop_Row_Back(arr_dual, rows, cols);
+	Print(arr_dual, rows, cols);
+
+#endif POP_ROW_BACK
 
 	Clear(arr_dual, rows);
 }
@@ -482,6 +494,20 @@ int** Push_Col_Front(int**& arr_dual, const int ROWS, int& COLS)
 		}
 	}
 	Clear(arr_dual, ROWS);
+	return buffer;
+}
+
+int** Pop_Row_Back(int**& arr_dual, int& ROWS, const int COLS)
+{
+	int** buffer = Allocate(--ROWS, COLS);
+	for (int i = 0; i < ROWS; i++)
+	{
+		for (int j = 0; j < COLS; j++)
+		{
+			buffer[i][j] = arr_dual[i][j];
+		}
+	}
+	Clear(arr_dual, ROWS + 1);
 	return buffer;
 }
 
