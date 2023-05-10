@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include<ctime>
 using namespace std;
 
 
@@ -11,7 +12,10 @@ using namespace std;
 //#define POINTER_ARITHMETIC
 //#define ALLOCATE
 //#define CLEAR
+
 //#define PUSH_ROW_BACK
+#define PREFORMANCE_TEST
+
 //#define PUSH_COL_BACK
 //#define PUSH_ROW_FRONT
 //#define PUSH_COL_FRONT
@@ -23,7 +27,6 @@ using namespace std;
 //#define POP_COLS_FRONT
 //#define ERASE_ROW
 //#define ERASE_COLS
-
 
 int** Allocate(const int ROWS, const int COLS);
 void Clear(int** &arr_dual, const int ROWS);
@@ -38,7 +41,7 @@ void Print(int** arr, const int ROWS, const int COLS);
 
 void PushBack(int *&arr, int& n, const int number);
 
-int** Push_Row_Back(int** &arr_dual, int &ROWS, const int COLS);
+int** Push_Row_Back(int** arr_dual, int &ROWS, const int COLS);
 int** Push_Col_Back(int**& arr_dual, const int ROWS, int& COLS);
 
 void PushFront(int*& arr, int& n, const int number_front);
@@ -152,17 +155,13 @@ void main()
 	//---------------------------------------------------------------------------------------------------------------
 	// Двумерные динамические массивы
 
-	int rows = 3, cols = 4;
-	//cout << "Введите кол-во строк: "; cin >> rows;
-	//cout << "Введите кол-во столбцов: "; cin >> cols;
+	int rows, cols;
+	cout << "Введите кол-во строк: "; cin >> rows;
+	cout << "Введите кол-во столбцов: "; cin >> cols;
 	
-	int** arr_dual = new int* [rows];
-	for (int i = 0; i < rows; i++)
-	{
-		arr_dual[i] = new int[cols];
-	}
-	FillRand(arr_dual, rows, cols);
-	Print(arr_dual, rows, cols);
+	int** arr_dual = Allocate(rows, cols);
+	//FillRand(arr_dual, rows, cols);
+	//Print(arr_dual, rows, cols);
 
 #ifdef POINTER_ARITHMETIC
 	// -------------------------------------------------------------------------------------------------------------
@@ -202,11 +201,12 @@ void main()
 	// ---------------------------------------------------------------------------------------------------------
 	// Добавляем в конец пустую строку
 	cout << endl << "Добавляем в конец динамического массива пустую строку" << endl;
+	system("PAUSE");
 	arr_dual = Push_Row_Back(arr_dual, rows, cols);
-	Print(arr_dual, rows, cols);
+	//Print(arr_dual, rows, cols);
 
 #endif PUSH_ROW_BACK
-	
+
 #ifdef PUSH_COL_BACK
 	//------------------------------------------------------------------------------------------------
 	// Добавляем столбец в конец динамического массива
@@ -322,6 +322,18 @@ void main()
 
 #endif ERASE_COLS
 
+#ifdef PREFORMANCE_TEST
+
+	cout << "Память выделена, для добавления строки нажмите на любую клавишу" << endl;
+	system("PAUSE");
+	clock_t c_start = clock();
+	arr_dual = Push_Row_Back(arr_dual, rows, cols);
+	clock_t c_end = clock();
+	cout << "Строка добавлена за: " << double(c_end - c_start) / CLOCKS_PER_SEC << endl;
+	system("PAUSE");
+
+
+#endif PREFORMANCE_TEST
 	Clear(arr_dual, rows);
 }
 int** Allocate(const int ROWS, const int COLS)
@@ -340,6 +352,7 @@ void Clear(int** &arr_dual, const int ROWS)
 	{
 		delete[] arr_dual[i];
 	}delete[] arr_dual;
+	arr_dual = nullptr;
 }
 
 void FillRand(int arr[], const int n)
@@ -397,19 +410,14 @@ void PushBack(int*& arr, int& n, const int number)
 	//cout << &arr << endl; //проверка адреса массива - УСПЕШНО, работаем именно с одним и тем же массивом
 }
 
-int** Push_Row_Back(int** &arr_dual, int &ROWS, const int COLS)
+int** Push_Row_Back(int** arr_dual, int &ROWS, const int COLS)
 {
-	int** buffer = Allocate(++ROWS, COLS);
-	for (int i = 0; i < ROWS - 1; i++)
-	{
-		for (int j = 0; j < COLS; j++)
-		{
-			buffer[i][j] = arr_dual[i][j];
-		}
-	}
-	for (int i = 0; i < COLS; i++)buffer[ROWS -1][i] = 0;
-	Clear(arr_dual, ROWS - 1);
-	return buffer;
+	int** buffer = new int*[++ROWS];
+	for (int i = 0; i < ROWS - 1; i++) buffer[i] = arr_dual[i];
+	delete[] arr_dual;
+	arr_dual = buffer;
+	arr_dual[ROWS - 1] = new int[COLS] {};
+	return arr_dual;
 }
 
 int** Push_Col_Back(int**& arr_dual,const int ROWS, int &COLS)
