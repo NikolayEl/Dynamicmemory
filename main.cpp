@@ -478,6 +478,7 @@ void Pop_Cols_Back(int** arr_dual, const int ROWS, int& COLS)
 
 int** Pop_Row_Back(int** arr_dual, int& ROWS, const int COLS)
 {
+	delete[] arr_dual[ROWS - 1];
 	int** buffer = new int*[--ROWS];
 	for (int i = 0; i < ROWS; i++) buffer[i] = arr_dual[i];
 	delete[] arr_dual;
@@ -489,6 +490,7 @@ int** Pop_Row_Front(int** arr_dual, int& ROWS, const int COLS)
 {
 	int** buffer = new int*[--ROWS];
 	for (int i = 0; i < ROWS; i++)buffer[i] = arr_dual[i + 1];
+	delete[] arr_dual[ROWS];
 	delete[] arr_dual;
 	arr_dual = buffer;
 	return arr_dual;
