@@ -51,7 +51,7 @@ void Pop_Cols_Front(int** arr_dual, const int ROWS, int& COLS);
 void Erase(int*& arr, int& n, const int index);
 
 int** Erase_Row(int** arr_dual, int& ROWS, const int COLS, const int index);
-int** Erase_Cols(int**& arr_dual, const int ROWS, int& COLS, const int index);
+void Erase_Cols(int** arr_dual, const int ROWS, int& COLS, const int index);
 
 
 void main()
@@ -235,7 +235,7 @@ void main()
 
 	int index_cols;
 	cout << "Введите индекс удаляемого столбца из двумерного динамического массива от 0 до " << cols - 1 << " : "; cin >> index_cols;
-	arr_dual = Erase_Cols(arr_dual, rows, cols, index_cols);
+	Erase_Cols(arr_dual, rows, cols, index_cols);
 	Print(arr_dual, rows, cols);
 
 #endif TWO_DYNAMIC_ARRAY
@@ -537,19 +537,15 @@ int** Erase_Row(int** arr_dual, int& ROWS, const int COLS, const int index)
 	return arr_dual;
 }
 
-int** Erase_Cols(int**& arr_dual, const int ROWS, int& COLS, const int index)
+void Erase_Cols(int** arr_dual, const int ROWS, int& COLS, const int index)
 {
-	int** buffer = Allocate(ROWS, --COLS);
-	int temp = 0;
 	for (int i = 0; i < ROWS; i++)
 	{
-		for (int j = 0; j < COLS; j++)
-		{
-			if (j >= index) temp = 1;
-			if (j == 0 && i != 0 && j < index) temp = 0;
-			buffer[i][j] = arr_dual[i][j + temp];
-		}
+		int* buffer = new int[COLS - 1];
+		for (int j = 0; j < index; j++) buffer[j] = arr_dual[i][j];
+		for (int j = index; j < COLS - 1; j++) buffer[j] = arr_dual[i][j + 1];
+		delete[] arr_dual[i];
+		arr_dual[i] = buffer;
 	}
-	Clear(arr_dual, ROWS);
-	return buffer;
+	COLS--;
 }
