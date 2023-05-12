@@ -3,30 +3,12 @@
 using namespace std;
 
 
-//#define PUSH_BACK
-//#define PUSH_FRONT
-//#define INSERT
-//#define POP_BACK
-//#define POP_FRONT
-//#define ERASE
-//#define POINTER_ARITHMETIC
-//#define ALLOCATE
-//#define CLEAR
+//#define ONE_DYNAMIC_ARRAY
 
-//#define PUSH_ROW_BACK
-#define PREFORMANCE_TEST
 
-//#define PUSH_COL_BACK
-//#define PUSH_ROW_FRONT
-//#define PUSH_COL_FRONT
-//#define INSERT_ROW
-//#define INSERT_COL
-//#define POP_ROW_BACK
-//#define POP_COLS_BACK
-//#define POP_ROW_FRONT
-//#define POP_COLS_FRONT
-//#define ERASE_ROW
-//#define ERASE_COLS
+//#define PREFORMANCE_TEST
+
+#define TWO_DYNAMIC_ARRAY
 
 int** Allocate(const int ROWS, const int COLS);
 void Clear(int** &arr_dual, const int ROWS);
@@ -42,7 +24,7 @@ void Print(int** arr, const int ROWS, const int COLS);
 void PushBack(int *&arr, int& n, const int number);
 
 int** Push_Row_Back(int** arr_dual, int &ROWS, const int COLS);
-int** Push_Col_Back(int**& arr_dual, const int ROWS, int& COLS);
+void Push_Col_Back(int** arr_dual, const int ROWS, int& COLS);
 
 void PushFront(int*& arr, int& n, const int number_front);
 
@@ -83,7 +65,7 @@ void main()
 	//cout << "Конец исходного массива" << endl << endl;
 
 
-#ifdef PUSH_BACK
+#ifdef ONE_DYNAMIC_ARRAY
 
 	// -----------------------------------------------------------------------
 	// Добавляем элемент в конец массива
@@ -93,9 +75,6 @@ void main()
 	//cout << &arr << endl; //проверка адреса массива - УСПЕШНО, работаем именно с одним и тем же массивом
 	cout << "Добавили в конец массива число " << value << ":" << endl;
 	Print(arr, n); cout << endl;
-#endif //PUSH_BACK
-
-#ifdef PUSH_FRONT
 
 	//-------------------------------------------------------------------------
 	// Добавляем элемент в начало массива
@@ -106,10 +85,6 @@ void main()
 	cout << "Добавили в начало массива число " << number_front << ":" << endl;
 	Print(arr, n); cout << endl;
 
-#endif //PUSH_FRONT
-
-
-#ifdef INSERT
 	//-------------------------------------------------------------------------
 	// Добавляем значение по указанному индексу
 
@@ -120,27 +95,18 @@ void main()
 	cout << "Добавили число " << number_index << " по индексу " << index << ":" << endl;
 	Print(arr, n); cout << endl;
 
-#endif //INSERT
-
-#ifdef POP_BACK
 	//-------------------------------------------------------------------------
 	// Удаляем последний элемент массива
 	PopBack(arr, n);
 	cout << "Удалили последний элемент массива:" << endl;
 	Print(arr, n); cout << endl;
 
-#endif //POP_BACK
-
-#ifdef POP_FRONT
 	//--------------------------------------------------------------------------
 	// Удаляем нулевой элемент массива
 	PopFront(arr, n);
 	cout << "Удалили нулевой элемент массива:" << endl;
 	Print(arr, n);
 
-#endif // POP_FRONT
-	
-#ifdef ERASE
 	//--------------------------------------------------------------------------
 	// Удаляем элемент из массива по указанному индексу
 	int index_erase;
@@ -150,20 +116,19 @@ void main()
 	Print(arr, n); cout << endl;
 
 	delete[] arr;
-#endif //ERASE
+#endif ONE_DYNAMIC_ARRAY
 
+#ifdef TWO_DYNAMIC_ARRAY
 	//---------------------------------------------------------------------------------------------------------------
 	// Двумерные динамические массивы
-
 	int rows, cols;
 	cout << "Введите кол-во строк: "; cin >> rows;
 	cout << "Введите кол-во столбцов: "; cin >> cols;
 	
 	int** arr_dual = Allocate(rows, cols);
-	//FillRand(arr_dual, rows, cols);
-	//Print(arr_dual, rows, cols);
+	FillRand(arr_dual, rows, cols);
+	Print(arr_dual, rows, cols);
 
-#ifdef POINTER_ARITHMETIC
 	// -------------------------------------------------------------------------------------------------------------
 	// Вывод при помощи арифметики указателей
 	cout << "Вывод при помощи арифметики указателей" << endl;
@@ -178,9 +143,6 @@ void main()
 		}
 		cout << endl;
 	}
-#endif POINTER_ARITHMETIC
-
-#ifdef ALLOCATE
 	// -------------------------------------------------------------------------------------------------------------
 	// Проверка функции Allocate
 	int** arr_dual2 = Allocate(rows, cols);
@@ -188,16 +150,6 @@ void main()
 	Print(arr_dual2, rows, cols);
 	Clear (arr_dual2, rows);
 
-#endif ALLOCATE
-
-#ifdef CLEAR
-
-	Clear(arr_dual, rows);
-	Print(arr_dual, rows, cols);
-
-#endif CLEAR
-
-#ifdef PUSH_ROW_BACK
 	// ---------------------------------------------------------------------------------------------------------
 	// Добавляем в конец пустую строку
 	cout << endl << "Добавляем в конец динамического массива пустую строку" << endl;
@@ -205,19 +157,13 @@ void main()
 	arr_dual = Push_Row_Back(arr_dual, rows, cols);
 	//Print(arr_dual, rows, cols);
 
-#endif PUSH_ROW_BACK
-
-#ifdef PUSH_COL_BACK
 	//------------------------------------------------------------------------------------------------
 	// Добавляем столбец в конец динамического массива
 
 	cout << endl << "Добавляем столбец в конец динамического массива" << endl;
-	arr_dual = Push_Col_Back(arr_dual, rows, cols);
+	Push_Col_Back(arr_dual, rows, cols);
 	Print(arr_dual, rows, cols);
 
-#endif PUSH_COL_BACK
-
-#ifdef PUSH_ROW_FRONT
 	//------------------------------------------------------------------------------------------------------------
 	// Добавляем пустую строку в начало динамического массива
 
@@ -225,9 +171,6 @@ void main()
 	arr_dual = Push_Row_Front(arr_dual, rows, cols);
 	Print(arr_dual, rows, cols);
 
-#endif PUSH_ROW_FRONT
-
-#ifdef PUSH_COL_FRONT
 	//---------------------------------------------------------------------------------------------------------
 	// добавляет пустой столбец в начало двумерного динамического массива
 
@@ -235,9 +178,6 @@ void main()
 	arr_dual = Push_Col_Front(arr_dual, rows, cols);
 	Print(arr_dual, rows, cols);
 
-#endif PUSH_COL_FRONT
-
-#ifdef INSERT_ROW
 	//----------------------------------------------------------------------------------------------------------
 	// вставляет пустую строку в двумерный динамический массив по заданному индексу
 	cout << endl << "Вставляем пустую строку в двумерный динамический массив по заданному индексу" << endl;
@@ -247,10 +187,6 @@ void main()
 	arr_dual = Insert_Row(arr_dual, rows, cols, index_row);
 	Print(arr_dual, rows, cols);
 
-
-#endif INSER_ROW
-
-#ifdef INSERT_COL
 	//---------------------------------------------------------------------------------------------
 	// вставляет пустой столбец в двумерный динамический массив по заданному индексу
 	cout << endl << "Вставляем пустой столбец в двумерный динамический массив по заданному индексу" << endl;
@@ -260,45 +196,31 @@ void main()
 	arr_dual = Insert_Col(arr_dual, rows, cols, index_col);
 	Print(arr_dual, rows, cols);
 
-#endif INSER_COL
-
-#ifdef POP_ROW_BACK
 	//------------------------------------------------------------------------------------
 	// удаляет последнюю строку двумерного динамического массива
 	cout << endl << "Удаляет последнюю строку двумерного динамического массива" << endl;
 	arr_dual = Pop_Row_Back(arr_dual, rows, cols);
 	Print(arr_dual, rows, cols);
 
-#endif POP_ROW_BACK
-
-#ifdef POP_COLS_BACK
 	//-----------------------------------------------------------------------------------------------------------
 	// удаляет столбец с конца двумерного динамического массива
 	cout << endl << "Удаляем столбец с конца двумерного динамического массива" << endl;
 	arr_dual = Pop_Cols_Back(arr_dual, rows, cols);
 	Print(arr_dual, rows, cols);
 
-#endif POP_COLS_BACK
-
-#ifdef POP_ROW_FRONT
 	//-----------------------------------------------------------------------------------------------------------
 	//удаляет нулевую  строку двумерного динамического массива
 	cout << endl << "Удаляем нулевую  строку двумерного динамического массива" << endl;
 	arr_dual = Pop_Row_Front(arr_dual, rows, cols);
 	Print(arr_dual, rows, cols);
 
-#endif POP_ROW FRONT
 
-#ifdef POP_COLS_FRONT
 	//---------------------------------------------------------------------------------------------------------------
 	//удаляет столбец с начала двумерного динамического массива
 	cout << endl << "Удаляем столбец с начала двумерного динамического массива" << endl;
 	arr_dual = Pop_Cols_Front(arr_dual, rows, cols);
 	Print(arr_dual, rows, cols);
 
-#endif POP_COLS_FRONT
-
-#ifdef ERASE_ROW
 	//------------------------------------------------------------------------------------------------------------------
 	// удаляет строку из двумерного динамического массива по заданному индексу
 	cout << endl << "Удаляем строку из двумерного динамического массива по заданному индексу" << endl;
@@ -308,9 +230,6 @@ void main()
 	arr_dual = Erase_Row(arr_dual, rows, cols, index_rows);
 	Print(arr_dual, rows, cols);
 
-#endif ERASE_ROW
-
-#ifdef ERASE_COLS
 	//--------------------------------------------------------------------------------------------------------
 	//удаляет столбец из двумерного динамического массива по заданному индексу
 	cout << endl << "Удаляем столбец из двумерного динамического массива по заданному индексу" << endl;
@@ -320,7 +239,7 @@ void main()
 	arr_dual = Erase_Cols(arr_dual, rows, cols, index_cols);
 	Print(arr_dual, rows, cols);
 
-#endif ERASE_COLS
+#endif TWO_DYNAMIC_ARRAY
 
 #ifdef PREFORMANCE_TEST
 
@@ -420,24 +339,22 @@ int** Push_Row_Back(int** arr_dual, int &ROWS, const int COLS)
 	return arr_dual;
 }
 
-int** Push_Col_Back(int**& arr_dual,const int ROWS, int &COLS)
+void Push_Col_Back(int** arr_dual, const int ROWS, int& COLS)
 {
-	int** buffer = Allocate(ROWS, ++COLS);
 	for (int i = 0; i < ROWS; i++)
 	{
-		for (int j = 0; j < COLS; j++)
-		{
-			if (j == COLS - 1)
-			{
-				buffer[i][j] = 0;
-				continue;
-			}
-			buffer[i][j] = arr_dual[i][j];
-		}
+		//1) Создаем буферную строку:
+		int* buffer = new int[COLS + 1] {};
+		//2) Копируем все содержимое из исходной строки в буферную
+		for (int j = 0; j < COLS; j++)buffer[j] = arr_dual[i][j];
+		//3) Удаляем исходную строку
+		delete[] arr_dual[i];
+		//4) Записываем адрес новой строки в массив указателей
+		arr_dual[i] = buffer;
 	}
-	Clear(arr_dual, ROWS);
-	return buffer;
+	COLS++;
 }
+	
 
 void PushFront(int*& arr, int& n, const int number_index)
 {
