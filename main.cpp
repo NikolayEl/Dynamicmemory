@@ -372,17 +372,12 @@ void PushFront(int*& arr, int& n, const int number_index)
 
 int** Push_Row_Front(int**& arr_dual, int& ROWS, const int COLS)
 {
-	int** buffer = Allocate(++ROWS, COLS);
-	for (int i = 0; i < ROWS - 1; i++)
-	{
-		for (int j = 0; j < COLS; j++)
-		{
-			buffer[i + 1][j] = arr_dual[i][j];
-		}
-	}
-	for (int i = 0; i < COLS; i++)buffer[0][i] = 0;
-	Clear(arr_dual, ROWS - 1);
-	return buffer;
+	int** buffer = new int* [++ROWS];
+	for (int i = 0; i < ROWS - 1; i++) buffer[i + 1] = arr_dual[i];
+	delete[] arr_dual;
+	arr_dual = buffer;
+	arr_dual[0] = new int[COLS] {};
+	return arr_dual;
 }
 
 void Insert(int*& arr, int& n, const int number_index, const int index)
