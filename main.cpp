@@ -29,13 +29,13 @@ void Push_Col_Back(int** arr_dual, const int ROWS, int& COLS);
 void PushFront(int*& arr, int& n, const int number_front);
 
 int** Push_Row_Front(int**& arr_dual, int& ROWS, const int COLS);
-int** Push_Col_Front(int**& arr_dual, const int COLS, int& ROWS);
+void Push_Col_Front(int** arr_dual, const int COLS, int& ROWS);
 
 
 void Insert(int*& arr, int& n, const int number_index, const int index);
 
-int** Insert_Row(int**& arr_dual, int& ROWS, const int COLS, const int index);
-int** Insert_Col(int**& arr_dual, const int ROWS, int& COLS, const int index);
+int** Insert_Row(int** arr_dual, int& ROWS, const int COLS, const int index);
+void Insert_Col(int** arr_dual, const int ROWS, int& COLS, const int index);
 
 void PopBack(int*& arr, int& n);
 
@@ -124,7 +124,7 @@ void main()
 	int rows, cols;
 	cout << "Введите кол-во строк: "; cin >> rows;
 	cout << "Введите кол-во столбцов: "; cin >> cols;
-	
+
 	int** arr_dual = Allocate(rows, cols);
 	FillRand(arr_dual, rows, cols);
 	Print(arr_dual, rows, cols);
@@ -143,19 +143,14 @@ void main()
 		}
 		cout << endl;
 	}
-	// -------------------------------------------------------------------------------------------------------------
-	// Проверка функции Allocate
-	int** arr_dual2 = Allocate(rows, cols);
-	FillRand(arr_dual2, rows, cols);
-	Print(arr_dual2, rows, cols);
-	Clear (arr_dual2, rows);
+
 
 	// ---------------------------------------------------------------------------------------------------------
 	// Добавляем в конец пустую строку
 	cout << endl << "Добавляем в конец динамического массива пустую строку" << endl;
-	system("PAUSE");
 	arr_dual = Push_Row_Back(arr_dual, rows, cols);
-	//Print(arr_dual, rows, cols);
+	Print(arr_dual, rows, cols);
+	system("PAUSE");
 
 	//------------------------------------------------------------------------------------------------
 	// Добавляем столбец в конец динамического массива
@@ -163,20 +158,22 @@ void main()
 	cout << endl << "Добавляем столбец в конец динамического массива" << endl;
 	Push_Col_Back(arr_dual, rows, cols);
 	Print(arr_dual, rows, cols);
-
+	system("PAUSE");
 	//------------------------------------------------------------------------------------------------------------
 	// Добавляем пустую строку в начало динамического массива
 
 	cout << endl << "Добавляем пустую строку в начало динамического массива" << endl;
 	arr_dual = Push_Row_Front(arr_dual, rows, cols);
 	Print(arr_dual, rows, cols);
+	system("PAUSE");
 
 	//---------------------------------------------------------------------------------------------------------
 	// добавляет пустой столбец в начало двумерного динамического массива
 
 	cout << endl << "Добавляем пустой столбец в начало" << endl;
-	arr_dual = Push_Col_Front(arr_dual, rows, cols);
+	Push_Col_Front(arr_dual, rows, cols);
 	Print(arr_dual, rows, cols);
+	system("PAUSE");
 
 	//----------------------------------------------------------------------------------------------------------
 	// вставляет пустую строку в двумерный динамический массив по заданному индексу
@@ -186,15 +183,16 @@ void main()
 	cout << "Задайте индекс строки от 0 до " << rows << ": "; cin >> index_row; //Так как мы можем вставить в самый конец массива, потому мы пишем rows целиком (без вычетания)
 	arr_dual = Insert_Row(arr_dual, rows, cols, index_row);
 	Print(arr_dual, rows, cols);
-
+	system("PAUSE");
 	//---------------------------------------------------------------------------------------------
 	// вставляет пустой столбец в двумерный динамический массив по заданному индексу
 	cout << endl << "Вставляем пустой столбец в двумерный динамический массив по заданному индексу" << endl;
 
 	int index_col;
 	cout << "Укажите индекс куда будем вставлять столбец от 0 до " << cols << ": "; cin >> index_col;
-	arr_dual = Insert_Col(arr_dual, rows, cols, index_col);
+	Insert_Col(arr_dual, rows, cols, index_col);
 	Print(arr_dual, rows, cols);
+	system("PAUSE");
 
 	//------------------------------------------------------------------------------------
 	// удаляет последнюю строку двумерного динамического массива
@@ -401,39 +399,29 @@ void Insert(int*& arr, int& n, const int number_index, const int index)
 	n++;
 }
 
-int** Insert_Row(int**& arr_dual, int& ROWS, const int COLS, const int index)
+int** Insert_Row(int** arr_dual, int& ROWS, const int COLS, const int index)
 {
-	int** buffer = Allocate(++ROWS, COLS);
-	int temp = 0;
-	for (int i = 0; i < COLS; i++)buffer[index][i] = 0;
-	for (int i = 0; i < ROWS - 1; i++)
-	{
-		for (int j = 0; j < COLS; j++)
-		{
-			if (i >= index)temp = 1;
-			buffer[i + temp][j] = arr_dual[i][j];
-		}
-	}
-	Clear(arr_dual, ROWS - 1);
-	return buffer;
+	int** buffer = new int* [++ROWS];
+	for (int i = 0; i < index; i++)buffer[i] = arr_dual[i];
+	buffer[index] = new int[COLS] {};
+	for (int i = index + 1; i < ROWS; i++)buffer[i] = arr_dual[i - 1];
+	delete[] arr_dual;
+	arr_dual = buffer;
+	return arr_dual;
 }
 
-int** Insert_Col(int**& arr_dual, const int ROWS, int& COLS, const int index)
+void Insert_Col(int** arr_dual, const int ROWS, int& COLS, const int index)
 {
-	int** buffer = Allocate(ROWS, ++COLS);
-	int temp = 0;
-	for (int i = 0; i < ROWS; i++)buffer[i][index] = 0;
 	for (int i = 0; i < ROWS; i++)
 	{
-		for (int j = 0; j < COLS - 1; j++)
-		{
-			if (j >= index)temp = 1;
-			if (j == 0 && i != 0 && j < index) temp = 0;
-			buffer[i][j + temp] = arr_dual[i][j];
-		}
+		int* buffer = new int[COLS + 1] {};
+		for (int j = 0; j < index; j++) buffer[j] = arr_dual[i][j];
+		buffer[index] = 0;
+		for (int j = index + 1; j < COLS + 1; j++) buffer[j] = arr_dual[i][j - 1];
+		delete[] arr_dual[i];
+		arr_dual[i] = buffer;
 	}
-	Clear(arr_dual, ROWS);
-	return buffer;
+	COLS++;
 }
 
 void PopBack(int*& arr, int& n)
@@ -464,19 +452,15 @@ void PopFront(int*& arr, int& n)
 	//cout << arr[n] << endl; //Проверка что первый элемент действительно удален и в памяти больше нет чисел из массива!
 }
 
-int** Push_Col_Front(int**& arr_dual, const int ROWS, int& COLS)
+void Push_Col_Front(int** arr_dual, const int ROWS, int& COLS)
 {
-	int** buffer = Allocate(ROWS, ++COLS);
-	for (int i = 0; i < ROWS; i++)buffer[i][0] = 0;
 	for (int i = 0; i < ROWS; i++)
 	{
-		for (int j = 0; j < COLS - 1; j++)
-		{
-			buffer[i][j + 1] = arr_dual[i][j];
-		}
+		int* buffer = new int[COLS + 1] {};
+		for (int j = 0; j < COLS; j++) buffer[j + 1] = arr_dual[i][j];
+		delete[] arr_dual[i];
+		arr_dual[i] = buffer;
 	}
-	Clear(arr_dual, ROWS);
-	return buffer;
 }
 
 int** Pop_Cols_Back(int**& arr_dual, const int ROWS, int& COLS)
