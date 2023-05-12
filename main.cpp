@@ -46,7 +46,7 @@ void Pop_Cols_Back(int** arr_dual, const int ROWS, int& COLS);
 void PopFront(int*& arr, int& n);
 
 int** Pop_Row_Front(int** arr_dual, int& ROWS, const int COLS);
-int** Pop_Cols_Front(int**& arr_dual, const int ROWS, int& COLS);
+void Pop_Cols_Front(int** arr_dual, const int ROWS, int& COLS);
 
 void Erase(int*& arr, int& n, const int index);
 
@@ -217,7 +217,7 @@ void main()
 	//---------------------------------------------------------------------------------------------------------------
 	//удаляет столбец с начала двумерного динамического массива
 	cout << endl << "Удаляем столбец с начала двумерного динамического массива" << endl;
-	arr_dual = Pop_Cols_Front(arr_dual, rows, cols);
+	Pop_Cols_Front(arr_dual, rows, cols);
 	Print(arr_dual, rows, cols);
 
 	//------------------------------------------------------------------------------------------------------------------
@@ -468,9 +468,12 @@ void Pop_Cols_Back(int** arr_dual, const int ROWS, int& COLS)
 {
 	for (int i = 0; i < ROWS; i++)
 	{
-		int* buffer = new int[COLS - 1] {};
-
+		int* buffer = new int[COLS - 1];
+		for (int j = 0; j < COLS - 1; j++) buffer[j] = arr_dual[i][j];
+		delete[] arr_dual[i];
+		arr_dual[i] = buffer;
 	}
+	COLS--;
 }
 
 int** Pop_Row_Back(int** arr_dual, int& ROWS, const int COLS)
@@ -491,18 +494,16 @@ int** Pop_Row_Front(int** arr_dual, int& ROWS, const int COLS)
 	return arr_dual;
 }
 
-int** Pop_Cols_Front(int**& arr_dual, const int ROWS, int& COLS)
+void Pop_Cols_Front(int** arr_dual, const int ROWS, int& COLS)
 {
-	int** buffer = Allocate(ROWS, --COLS);
 	for (int i = 0; i < ROWS; i++)
 	{
-		for (int j = 0; j < COLS; j++)
-		{
-			buffer[i][j] = arr_dual[i][j + 1];
-		}
+		int* buffer = new int[COLS - 1];
+		for (int j = 0; j < COLS - 1; j++)buffer[j] = arr_dual[i][j + 1];
+		delete[] arr_dual[i];
+		arr_dual[i] = buffer;
 	}
-	Clear(arr_dual, ROWS);
-	return buffer;
+	COLS--;
 }
 
 void Erase(int*& arr, int& n, const int index)
