@@ -488,9 +488,9 @@ int** Pop_Row_Back(int** arr_dual, int& ROWS, const int COLS)
 
 int** Pop_Row_Front(int** arr_dual, int& ROWS, const int COLS)
 {
+	delete[] arr_dual[ROWS - 1];
 	int** buffer = new int*[--ROWS];
 	for (int i = 0; i < ROWS; i++)buffer[i] = arr_dual[i + 1];
-	delete[] arr_dual[ROWS];
 	delete[] arr_dual;
 	arr_dual = buffer;
 	return arr_dual;
@@ -531,6 +531,7 @@ void Erase(int*& arr, int& n, const int index)
 
 int** Erase_Row(int** arr_dual, int& ROWS, const int COLS, const int index)
 {
+	delete arr_dual[index];
 	int** buffer = new int* [--ROWS];
 	for (int i = 0; i < index; i++) buffer[i] = arr_dual[i];
 	for (int i = index + 1; i < ROWS + 1; i++) buffer[i - 1] = arr_dual[i];
