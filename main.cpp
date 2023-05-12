@@ -50,7 +50,7 @@ void Pop_Cols_Front(int** arr_dual, const int ROWS, int& COLS);
 
 void Erase(int*& arr, int& n, const int index);
 
-int** Erase_Row(int**& arr_dual, int& ROWS, const int COLS, const int index);
+int** Erase_Row(int** arr_dual, int& ROWS, const int COLS, const int index);
 int** Erase_Cols(int**& arr_dual, const int ROWS, int& COLS, const int index);
 
 
@@ -527,20 +527,14 @@ void Erase(int*& arr, int& n, const int index)
 	//cout << arr[n] << endl; //Проверка что выбранный элемент действительно удален и в памяти больше нет чисел из массива!
 }
 
-int** Erase_Row(int**& arr_dual, int& ROWS, const int COLS, const int index)
+int** Erase_Row(int** arr_dual, int& ROWS, const int COLS, const int index)
 {
-	int** buffer = Allocate(--ROWS, COLS);
-	int temp = 0;
-	for (int i = 0; i < ROWS; i++)
-	{
-		for (int j = 0; j < COLS; j++)
-		{
-			if (i >= index) temp = 1;
-			buffer[i][j] = arr_dual[i + temp][j];
-		}
-	}
-	Clear(arr_dual, ROWS + 1);
-	return buffer;
+	int** buffer = new int* [--ROWS];
+	for (int i = 0; i < index; i++) buffer[i] = arr_dual[i];
+	for (int i = index + 1; i < ROWS + 1; i++) buffer[i - 1] = arr_dual[i];
+	delete[] arr_dual;
+	arr_dual = buffer;
+	return arr_dual;
 }
 
 int** Erase_Cols(int**& arr_dual, const int ROWS, int& COLS, const int index)
