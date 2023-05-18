@@ -5,8 +5,7 @@
 //#define PREFORMANCE_TEST
 //#define TWO_DYNAMIC_ARRAY
 
-template <typename T> T** Insert_Row(T** arr_dual, int& ROWS, const int COLS, const int index);
-void Insert_Col(int** arr_dual, const int ROWS, int& COLS, const int index);
+template <typename T> void Insert_Col(T** arr_dual, const int ROWS, int& COLS, const int index);
 
 int** Pop_Row_Back(int** arr_dual, int& ROWS, const int COLS);
 void Pop_Cols_Back(int** arr_dual, const int ROWS, int& COLS);
@@ -152,7 +151,6 @@ void main()
 	arr_dual = Insert_Row(arr_dual, rows, cols, index_row);
 	Print(arr_dual, rows, cols);
 	system("PAUSE");
-#ifdef TWO_DYNAMIC_ARRAY
 	//---------------------------------------------------------------------------------------------
 	// вставляет пустой столбец в двумерный динамический массив по заданному индексу
 	cout << endl << "Вставляем пустой столбец в двумерный динамический массив по заданному индексу" << endl;
@@ -163,6 +161,7 @@ void main()
 	Print(arr_dual, rows, cols);
 	system("PAUSE");
 
+#ifdef TWO_DYNAMIC_ARRAY
 	//------------------------------------------------------------------------------------
 	// удаляет последнюю строку двумерного динамического массива
 	cout << endl << "Удаляет последнюю строку двумерного динамического массива" << endl;
@@ -224,23 +223,11 @@ void main()
 	//Clear(arr_dual, rows);
 }
 
-
-template <typename T> T** Insert_Row(T** arr_dual, int& ROWS, const int COLS, const int index)
-{
-	T** buffer = new T* [++ROWS];
-	for (int i = 0; i < index; i++)buffer[i] = arr_dual[i];
-	buffer[index] = new T[COLS] {};
-	for (int i = index + 1; i < ROWS; i++)buffer[i] = arr_dual[i - 1];
-	delete[] arr_dual;
-	arr_dual = buffer;
-	return arr_dual;
-}
-
-void Insert_Col(int** arr_dual, const int ROWS, int& COLS, const int index)
+template <typename T> void Insert_Col(T** arr_dual, const int ROWS, int& COLS, const int index)
 {
 	for (int i = 0; i < ROWS; i++)
 	{
-		int* buffer = new int[COLS + 1] {};
+		T* buffer = new T[COLS + 1] {};
 		for (int j = 0; j < index; j++) buffer[j] = arr_dual[i][j];
 		for (int j = index + 1; j < COLS + 1; j++) buffer[j] = arr_dual[i][j - 1];
 		delete[] arr_dual[i];

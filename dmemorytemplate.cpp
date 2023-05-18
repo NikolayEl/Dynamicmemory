@@ -1,5 +1,7 @@
 #include "dmemory.h"
 
+//Функции двумерного динамического массива с шаблоном (подключаемые в main)
+
 template <typename T> void Print(T** arr_dual, const int ROWS, const int COLS)
 {
 	for (int i = 0; i < ROWS; i++)
@@ -54,6 +56,30 @@ template <typename T> void Push_Col_Front(T** arr_dual, const int ROWS, int& COL
 	{
 		T* buffer = new T[COLS + 1]{};
 		for (int j = 0; j < COLS; j++) buffer[j + 1] = arr_dual[i][j];
+		delete[] arr_dual[i];
+		arr_dual[i] = buffer;
+	}
+	COLS++;
+}
+
+template <typename T> T** Insert_Row(T** arr_dual, int& ROWS, const int COLS, const int index)
+{
+	T** buffer = new T * [++ROWS];
+	for (int i = 0; i < index; i++)buffer[i] = arr_dual[i];
+	buffer[index] = new T[COLS]{};
+	for (int i = index + 1; i < ROWS; i++)buffer[i] = arr_dual[i - 1];
+	delete[] arr_dual;
+	arr_dual = buffer;
+	return arr_dual;
+}
+
+template <typename T> void Insert_Col(T** arr_dual, const int ROWS, int& COLS, const int index)
+{
+	for (int i = 0; i < ROWS; i++)
+	{
+		T* buffer = new T[COLS + 1]{};
+		for (int j = 0; j < index; j++) buffer[j] = arr_dual[i][j];
+		for (int j = index + 1; j < COLS + 1; j++) buffer[j] = arr_dual[i][j - 1];
 		delete[] arr_dual[i];
 		arr_dual[i] = buffer;
 	}
