@@ -34,3 +34,5 @@ template <typename T> void Insert_Col(T** arr_dual, const int ROWS, int& COLS, c
 template <typename T> T** Pop_Row_Back(T** arr_dual, int& ROWS, const int COLS);
 template <typename T> void Pop_Cols_Back(T** arr_dual, const int ROWS, int& COLS);
 template <typename T> T** Pop_Row_Front(T** arr_dual, int& ROWS, const int COLS);
+template <typename T> void Pop_Cols_Front(T** arr_dual, const int ROWS, int& COLS);
+template <typename T> T** Erase_Row(T** arr_dual, int& ROWS, const int COLS, const int index);

@@ -126,3 +126,13 @@ template <typename T> void Pop_Cols_Front(T** arr_dual, const int ROWS, int& COL
 	}
 	COLS--;
 }
+
+template <typename T> T** Erase_Row(T** arr_dual, int& ROWS, const int COLS, const int index)
+{
+	delete arr_dual[index];
+	T** buffer = new T * [--ROWS];
+	for (int i = 0; i < index; i++) buffer[i] = arr_dual[i];
+	for (int i = index + 1; i < ROWS + 1; i++) buffer[i - 1] = arr_dual[i];
+	delete[] arr_dual;
+	return buffer;
+}

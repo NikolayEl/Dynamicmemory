@@ -5,9 +5,6 @@
 //#define PREFORMANCE_TEST
 //#define TWO_DYNAMIC_ARRAY
 
-template <typename T> void Pop_Cols_Front(T** arr_dual, const int ROWS, int& COLS);
-
-int** Erase_Row(int** arr_dual, int& ROWS, const int COLS, const int index);
 void Erase_Cols(int** arr_dual, const int ROWS, int& COLS, const int index);
 
 void Clear(int**& arr_dual, const int ROWS);
@@ -182,7 +179,6 @@ void main()
 	Pop_Cols_Front(arr_dual, rows, cols);
 	Print(arr_dual, rows, cols);
 
-#ifdef TWO_DYNAMIC_ARRAY
 	//------------------------------------------------------------------------------------------------------------------
 	// удаляет строку из двумерного динамического массива по заданному индексу
 	cout << endl << "Удаляем строку из двумерного динамического массива по заданному индексу" << endl;
@@ -192,6 +188,7 @@ void main()
 	arr_dual = Erase_Row(arr_dual, rows, cols, index_rows);
 	Print(arr_dual, rows, cols);
 
+#ifdef TWO_DYNAMIC_ARRAY
 	//--------------------------------------------------------------------------------------------------------
 	//удаляет столбец из двумерного динамического массива по заданному индексу
 	cout << endl << "Удаляем столбец из двумерного динамического массива по заданному индексу" << endl;
@@ -216,28 +213,6 @@ void main()
 
 #endif PREFORMANCE_TEST
 	//Clear(arr_dual, rows);
-}
-
-template <typename T> void Pop_Cols_Front(T** arr_dual, const int ROWS, int& COLS)
-{
-	for (int i = 0; i < ROWS; i++)
-	{
-		T* buffer = new T[COLS - 1];
-		for (int j = 0; j < COLS - 1; j++)buffer[j] = arr_dual[i][j + 1];
-		delete[] arr_dual[i];
-		arr_dual[i] = buffer;
-	}
-	COLS--;
-}
-
-int** Erase_Row(int** arr_dual, int& ROWS, const int COLS, const int index)
-{
-	delete arr_dual[index];
-	int** buffer = new int* [--ROWS];
-	for (int i = 0; i < index; i++) buffer[i] = arr_dual[i];
-	for (int i = index + 1; i < ROWS + 1; i++) buffer[i - 1] = arr_dual[i];
-	delete[] arr_dual;
-	return buffer;
 }
 
 void Erase_Cols(int** arr_dual, const int ROWS, int& COLS, const int index)
