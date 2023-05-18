@@ -47,3 +47,15 @@ template <typename T> T** Push_Row_Front(T**& arr_dual, int& ROWS, const int COL
 	arr_dual[0] = new T[COLS]{};
 	return arr_dual;
 }
+
+template <typename T> void Push_Col_Front(T** arr_dual, const int ROWS, int& COLS)
+{
+	for (int i = 0; i < ROWS; i++)
+	{
+		T* buffer = new T[COLS + 1]{};
+		for (int j = 0; j < COLS; j++) buffer[j + 1] = arr_dual[i][j];
+		delete[] arr_dual[i];
+		arr_dual[i] = buffer;
+	}
+	COLS++;
+}

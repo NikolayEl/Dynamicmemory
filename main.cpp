@@ -5,8 +5,6 @@
 //#define PREFORMANCE_TEST
 //#define TWO_DYNAMIC_ARRAY
 
-void Push_Col_Front(int** arr_dual, const int ROWS, int& COLS);
-
 int** Insert_Row(int** arr_dual, int& ROWS, const int COLS, const int index);
 void Insert_Col(int** arr_dual, const int ROWS, int& COLS, const int index);
 
@@ -137,7 +135,6 @@ void main()
 	Print(arr_dual, rows, cols);
 	system("PAUSE");
 
-#ifdef TWO_DYNAMIC_ARRAY
 	//---------------------------------------------------------------------------------------------------------
 	// добавляет пустой столбец в начало двумерного динамического массива
 
@@ -146,6 +143,7 @@ void main()
 	Print(arr_dual, rows, cols);
 	system("PAUSE");
 
+#ifdef TWO_DYNAMIC_ARRAY
 	//----------------------------------------------------------------------------------------------------------
 	// вставляет пустую строку в двумерный динамический массив по заданному индексу
 	cout << endl << "Вставляем пустую строку в двумерный динамический массив по заданному индексу" << endl;
@@ -226,17 +224,6 @@ void main()
 	//Clear(arr_dual, rows);
 }
 
-void Push_Col_Front(int** arr_dual, const int ROWS, int& COLS)
-{
-	for (int i = 0; i < ROWS; i++)
-	{
-		int* buffer = new int[COLS + 1] {};
-		for (int j = 0; j < COLS; j++) buffer[j + 1] = arr_dual[i][j];
-		delete[] arr_dual[i];
-		arr_dual[i] = buffer;
-	}
-	COLS++;
-}
 
 int** Insert_Row(int** arr_dual, int& ROWS, const int COLS, const int index)
 {
