@@ -94,3 +94,15 @@ template <typename T> T** Pop_Row_Back(T** arr_dual, int& ROWS, const int COLS)
 	delete[] arr_dual;
 	return buffer;
 }
+
+template <typename T> void Pop_Cols_Back(T** arr_dual, const int ROWS, int& COLS)
+{
+	for (int i = 0; i < ROWS; i++)
+	{
+		T* buffer = new T[COLS - 1];
+		for (int j = 0; j < COLS - 1; j++) buffer[j] = arr_dual[i][j];
+		delete[] arr_dual[i];
+		arr_dual[i] = buffer;
+	}
+	COLS--;
+}

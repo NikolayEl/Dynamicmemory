@@ -5,9 +5,6 @@
 //#define PREFORMANCE_TEST
 //#define TWO_DYNAMIC_ARRAY
 
-void Pop_Cols_Back(int** arr_dual, const int ROWS, int& COLS);
-
-int** Pop_Row_Front(int** arr_dual, int& ROWS, const int COLS);
 void Pop_Cols_Front(int** arr_dual, const int ROWS, int& COLS);
 
 int** Erase_Row(int** arr_dual, int& ROWS, const int COLS, const int index);
@@ -165,13 +162,13 @@ void main()
 	Print(arr_dual, rows, cols);
 	system("PAUSE");
 
-#ifdef TWO_DYNAMIC_ARRAY
 	//-----------------------------------------------------------------------------------------------------------
 	// удаляет столбец с конца двумерного динамического массива
 	cout << endl << "Удаляем столбец с конца двумерного динамического массива" << endl;
 	Pop_Cols_Back(arr_dual, rows, cols);
 	Print(arr_dual, rows, cols);
 	system("PAUSE");
+
 	//-----------------------------------------------------------------------------------------------------------
 	//удаляет нулевую  строку двумерного динамического массива
 	cout << endl << "Удаляем нулевую  строку двумерного динамического массива" << endl;
@@ -179,6 +176,7 @@ void main()
 	Print(arr_dual, rows, cols);
 	system("PAUSE");
 
+#ifdef TWO_DYNAMIC_ARRAY
 	//---------------------------------------------------------------------------------------------------------------
 	//удаляет столбец с начала двумерного динамического массива
 	cout << endl << "Удаляем столбец с начала двумерного динамического массива" << endl;
@@ -218,26 +216,6 @@ void main()
 
 #endif PREFORMANCE_TEST
 	//Clear(arr_dual, rows);
-}
-
-void Pop_Cols_Back(int** arr_dual, const int ROWS, int& COLS)
-{
-	for (int i = 0; i < ROWS; i++)
-	{
-		int* buffer = new int[COLS - 1];
-		for (int j = 0; j < COLS - 1; j++) buffer[j] = arr_dual[i][j];
-		delete[] arr_dual[i];
-		arr_dual[i] = buffer;
-	}
-	COLS--;
-}
-
-int** Pop_Row_Front(int** arr_dual, int& ROWS, const int COLS)
-{
-	int** buffer = new int* [--ROWS];
-	for (int i = 0; i < ROWS; i++)buffer[i] = arr_dual[i + 1];
-	delete[] arr_dual;
-	return buffer;
 }
 
 void Pop_Cols_Front(int** arr_dual, const int ROWS, int& COLS)
