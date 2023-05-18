@@ -131,8 +131,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="dmemory.cpp" />
+    <ClCompile Include="dmemoryone.cpp" />
     <ClCompile Include="dmemorytemplate.cpp" />
+    <ClCompile Include="dmemorytwo.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -18,10 +18,13 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dmemory.cpp">
+    <ClCompile Include="dmemoryone.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="dmemorytemplate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dmemorytwo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
