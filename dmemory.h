@@ -30,3 +30,4 @@ template <typename T> void Push_Col_Back(T** arr_dual, const int ROWS, int& COLS
 template <typename T> T** Push_Row_Front(T**& arr_dual, int& ROWS, const int COLS);
 template <typename T> void Push_Col_Front(T** arr_dual, const int ROWS, int& COLS);
 template <typename T> T** Insert_Row(T** arr_dual, int& ROWS, const int COLS, const int index);
+template <typename T> void Insert_Col(T** arr_dual, const int ROWS, int& COLS, const int index);

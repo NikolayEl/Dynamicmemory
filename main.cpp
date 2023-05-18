@@ -5,9 +5,6 @@
 //#define PREFORMANCE_TEST
 //#define TWO_DYNAMIC_ARRAY
 
-template <typename T> void Insert_Col(T** arr_dual, const int ROWS, int& COLS, const int index);
-
-int** Pop_Row_Back(int** arr_dual, int& ROWS, const int COLS);
 void Pop_Cols_Back(int** arr_dual, const int ROWS, int& COLS);
 
 int** Pop_Row_Front(int** arr_dual, int& ROWS, const int COLS);
@@ -161,7 +158,6 @@ void main()
 	Print(arr_dual, rows, cols);
 	system("PAUSE");
 
-#ifdef TWO_DYNAMIC_ARRAY
 	//------------------------------------------------------------------------------------
 	// удаляет последнюю строку двумерного динамического массива
 	cout << endl << "Удаляет последнюю строку двумерного динамического массива" << endl;
@@ -169,6 +165,7 @@ void main()
 	Print(arr_dual, rows, cols);
 	system("PAUSE");
 
+#ifdef TWO_DYNAMIC_ARRAY
 	//-----------------------------------------------------------------------------------------------------------
 	// удаляет столбец с конца двумерного динамического массива
 	cout << endl << "Удаляем столбец с конца двумерного динамического массива" << endl;
@@ -223,20 +220,6 @@ void main()
 	//Clear(arr_dual, rows);
 }
 
-template <typename T> void Insert_Col(T** arr_dual, const int ROWS, int& COLS, const int index)
-{
-	for (int i = 0; i < ROWS; i++)
-	{
-		T* buffer = new T[COLS + 1] {};
-		for (int j = 0; j < index; j++) buffer[j] = arr_dual[i][j];
-		for (int j = index + 1; j < COLS + 1; j++) buffer[j] = arr_dual[i][j - 1];
-		delete[] arr_dual[i];
-		arr_dual[i] = buffer;
-	}
-	COLS++;
-}
-
-
 void Pop_Cols_Back(int** arr_dual, const int ROWS, int& COLS)
 {
 	for (int i = 0; i < ROWS; i++)
@@ -247,15 +230,6 @@ void Pop_Cols_Back(int** arr_dual, const int ROWS, int& COLS)
 		arr_dual[i] = buffer;
 	}
 	COLS--;
-}
-
-int** Pop_Row_Back(int** arr_dual, int& ROWS, const int COLS)
-{
-	delete[] arr_dual[ROWS - 1];
-	int** buffer = new int* [--ROWS];
-	for (int i = 0; i < ROWS; i++) buffer[i] = arr_dual[i];
-	delete[] arr_dual;
-	return buffer;
 }
 
 int** Pop_Row_Front(int** arr_dual, int& ROWS, const int COLS)

@@ -85,3 +85,12 @@ template <typename T> void Insert_Col(T** arr_dual, const int ROWS, int& COLS, c
 	}
 	COLS++;
 }
+
+template <typename T> T** Pop_Row_Back(T** arr_dual, int& ROWS, const int COLS)
+{
+	delete[] arr_dual[ROWS - 1];
+	T** buffer = new T * [--ROWS];
+	for (int i = 0; i < ROWS; i++) buffer[i] = arr_dual[i];
+	delete[] arr_dual;
+	return buffer;
+}
