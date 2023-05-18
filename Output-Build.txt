@@ -1,0 +1,5 @@
+﻿Build started...
+1>------ Build started: Project: Dynamicmemory, Configuration: Debug x64 ------
+1>Dynamicmemory.vcxproj -> P:\CPL\VIsualStudio\task2\Dynamicmemory\x64\Debug\Dynamicmemory.exe
+========== Build: 1 succeeded, 0 failed, 0 up-to-date, 0 skipped ==========
+========== Build started at 6:11 PM and took 00,319 seconds ==========
