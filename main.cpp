@@ -5,7 +5,7 @@
 //#define PREFORMANCE_TEST
 //#define TWO_DYNAMIC_ARRAY
 
-int** Insert_Row(int** arr_dual, int& ROWS, const int COLS, const int index);
+template <typename T> T** Insert_Row(T** arr_dual, int& ROWS, const int COLS, const int index);
 void Insert_Col(int** arr_dual, const int ROWS, int& COLS, const int index);
 
 int** Pop_Row_Back(int** arr_dual, int& ROWS, const int COLS);
@@ -143,7 +143,6 @@ void main()
 	Print(arr_dual, rows, cols);
 	system("PAUSE");
 
-#ifdef TWO_DYNAMIC_ARRAY
 	//----------------------------------------------------------------------------------------------------------
 	// вставляет пустую строку в двумерный динамический массив по заданному индексу
 	cout << endl << "Вставляем пустую строку в двумерный динамический массив по заданному индексу" << endl;
@@ -153,6 +152,7 @@ void main()
 	arr_dual = Insert_Row(arr_dual, rows, cols, index_row);
 	Print(arr_dual, rows, cols);
 	system("PAUSE");
+#ifdef TWO_DYNAMIC_ARRAY
 	//---------------------------------------------------------------------------------------------
 	// вставляет пустой столбец в двумерный динамический массив по заданному индексу
 	cout << endl << "Вставляем пустой столбец в двумерный динамический массив по заданному индексу" << endl;
@@ -225,11 +225,11 @@ void main()
 }
 
 
-int** Insert_Row(int** arr_dual, int& ROWS, const int COLS, const int index)
+template <typename T> T** Insert_Row(T** arr_dual, int& ROWS, const int COLS, const int index)
 {
-	int** buffer = new int* [++ROWS];
+	T** buffer = new T* [++ROWS];
 	for (int i = 0; i < index; i++)buffer[i] = arr_dual[i];
-	buffer[index] = new int[COLS] {};
+	buffer[index] = new T[COLS] {};
 	for (int i = index + 1; i < ROWS; i++)buffer[i] = arr_dual[i - 1];
 	delete[] arr_dual;
 	arr_dual = buffer;
