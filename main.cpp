@@ -3,11 +3,9 @@
 
 //#define ONE_DYNAMIC_ARRAY
 //#define PREFORMANCE_TEST
-//#define TWO_DYNAMIC_ARRAY
+#define TWO_DYNAMIC_ARRAY
 
-template <typename T> void Erase_Cols(T** arr_dual, const int ROWS, int& COLS, const int index);
-
-void Clear(int**& arr_dual, const int ROWS);
+template <typename T> void Clear(T**& arr_dual, const int ROWS);
 
 void main()
 {
@@ -86,6 +84,7 @@ void main()
 	FillRand(arr_dual, rows, cols);
 	Print(arr_dual, rows, cols);
 
+#ifdef TWO_DYNAMIC_ARRAY
 
 	// -------------------------------------------------------------------------------------------------------------
 	// Вывод при помощи арифметики указателей
@@ -196,7 +195,6 @@ void main()
 	cout << "Введите индекс удаляемого столбца из двумерного динамического массива от 0 до " << cols - 1 << " : "; cin >> index_cols;
 	Erase_Cols(arr_dual, rows, cols, index_cols);
 	Print(arr_dual, rows, cols);
-#ifdef TWO_DYNAMIC_ARRAY
 
 #endif TWO_DYNAMIC_ARRAY
 
@@ -212,23 +210,10 @@ void main()
 
 
 #endif PREFORMANCE_TEST
-	//Clear(arr_dual, rows);
+	Clear(arr_dual, rows);
 }
 
-template <typename T> void Erase_Cols(T** arr_dual, const int ROWS, int& COLS, const int index)
-{
-	for (int i = 0; i < ROWS; i++)
-	{
-		T* buffer = new T[COLS - 1];
-		for (int j = 0; j < index; j++) buffer[j] = arr_dual[i][j];
-		for (int j = index; j < COLS - 1; j++) buffer[j] = arr_dual[i][j + 1];
-		delete[] arr_dual[i];
-		arr_dual[i] = buffer;
-	}
-	COLS--;
-}
-
-void Clear(int**& arr_dual, const int ROWS)
+template <typename T> void Clear(T**& arr_dual, const int ROWS)
 {
 	for (int i = 0; i < ROWS; i++)
 	{

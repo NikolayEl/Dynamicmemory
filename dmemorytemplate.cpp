@@ -149,3 +149,12 @@ template <typename T> void Erase_Cols(T** arr_dual, const int ROWS, int& COLS, c
 	}
 	COLS--;
 }
+
+template <typename T> void Clear(T**& arr_dual, const int ROWS)
+{
+	for (int i = 0; i < ROWS; i++)
+	{
+		delete[] arr_dual[i];
+	}delete[] arr_dual;
+	arr_dual = nullptr;
+}
