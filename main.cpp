@@ -1,8 +1,57 @@
-﻿#include <iostream>
+﻿#include "dmemory.h"
+#include "dmemorytemplate.cpp"
+#include <iostream>
 #include<ctime>
-#include "dmemory.h"
 
 using namespace std;
+
+//#define ONE_DYNAMIC_ARRAY
+//#define PREFORMANCE_TEST
+//#define TWO_DYNAMIC_ARRAY
+
+double** Allocate(const int ROWS, const int COLS);
+
+void FillRand(int arr[], const int n);
+template <typename T> void FillRand(T** arr_dual, int ROWS, const int COLS);
+
+void Clear(int**& arr_dual, const int ROWS);
+
+
+void Print(int arr[], const int n);
+
+template <typename T> void Print(T** arr, const int ROWS, const int COLS);
+
+void PushBack(int*& arr, int& n, const int number);
+
+int** Push_Row_Back(int** arr_dual, int& ROWS, const int COLS);
+void Push_Col_Back(int** arr_dual, const int ROWS, int& COLS);
+
+void PushFront(int*& arr, int& n, const int number_front);
+
+int** Push_Row_Front(int**& arr_dual, int& ROWS, const int COLS);
+void Push_Col_Front(int** arr_dual, const int COLS, int& ROWS);
+
+
+void Insert(int*& arr, int& n, const int number_index, const int index);
+
+int** Insert_Row(int** arr_dual, int& ROWS, const int COLS, const int index);
+void Insert_Col(int** arr_dual, const int ROWS, int& COLS, const int index);
+
+void PopBack(int*& arr, int& n);
+
+int** Pop_Row_Back(int** arr_dual, int& ROWS, const int COLS);
+void Pop_Cols_Back(int** arr_dual, const int ROWS, int& COLS);
+
+void PopFront(int*& arr, int& n);
+
+int** Pop_Row_Front(int** arr_dual, int& ROWS, const int COLS);
+void Pop_Cols_Front(int** arr_dual, const int ROWS, int& COLS);
+
+void Erase(int*& arr, int& n, const int index);
+
+int** Erase_Row(int** arr_dual, int& ROWS, const int COLS, const int index);
+void Erase_Cols(int** arr_dual, const int ROWS, int& COLS, const int index);
+
 
 void main()
 {
@@ -69,17 +118,18 @@ void main()
 	delete[] arr;
 #endif ONE_DYNAMIC_ARRAY
 
-#ifdef TWO_DYNAMIC_ARRAY
 	//---------------------------------------------------------------------------------------------------------------
 	// Двумерные динамические массивы
 	int rows, cols;
 	cout << "Введите кол-во строк: "; cin >> rows;
 	cout << "Введите кол-во столбцов: "; cin >> cols;
 
-	int** arr_dual = Allocate(rows, cols);
+	//int** arr_dual = Allocate(rows, cols);
+	double** arr_dual = Allocate(rows, cols);
 	FillRand(arr_dual, rows, cols);
 	Print(arr_dual, rows, cols);
 
+#ifdef TWO_DYNAMIC_ARRAY
 	// -------------------------------------------------------------------------------------------------------------
 	// Вывод при помощи арифметики указателей
 	cout << "Вывод при помощи арифметики указателей" << endl;
@@ -202,19 +252,46 @@ void main()
 
 
 #endif PREFORMANCE_TEST
-	Clear(arr_dual, rows);
+	//Clear(arr_dual, rows);
 }
-int** Allocate(const int ROWS, const int COLS)
+
+double** Allocate(const int ROWS, const int COLS)
 {
-	int** arr_dual = new int* [ROWS];
+	double** arr_dual = new double* [ROWS];
 	for (int i = 0; i < ROWS; i++)
 	{
-		arr_dual[i] = new int[COLS];
+		arr_dual[i] = new double[COLS];
 	}
 	return arr_dual;
 }
 
-void Clear(int** &arr_dual, const int ROWS)
+template <typename T> void FillRand(T** arr_dual, int ROWS, const int COLS)
+{
+
+	for (int i = 0; i < ROWS; i++)
+	{
+		for (int j = 0; j < COLS; j++)
+		{
+			arr_dual[i][j] = rand() % (ROWS*COLS);
+			arr_dual[i][j] /= 10;
+		}
+			
+	}
+}
+
+template <typename T> void Print(T** arr_dual, const int ROWS, const int COLS)
+{
+	for (int i = 0; i < ROWS; i++)
+	{
+		for (int j = 0; j < COLS; j++)
+		{
+			cout << arr_dual[i][j] << "\t";
+		}
+		cout << endl;
+	}
+}
+
+void Clear(int**& arr_dual, const int ROWS)
 {
 	for (int i = 0; i < ROWS; i++)
 	{
@@ -231,15 +308,6 @@ void FillRand(int arr[], const int n)
 	}
 }
 
-void FillRand(int** arr_dual, const int ROWS, const int COLS)
-{
-	
-	for (int i = 0; i < ROWS; i++)
-	{
-		for (int j = 0; j < COLS; j++)arr_dual[i][j] = rand() % 12;
-	}
-}
-
 void Print(int arr[], const int n)
 {
 	for (int i = 0; i < n; i++)
@@ -249,19 +317,6 @@ void Print(int arr[], const int n)
 	cout << endl;
 }
 
-void Print(int** arr_dual, const int ROWS, const int COLS)
-{
-	for (int i = 0; i < ROWS; i++)
-	{
-		for (int j = 0; j < COLS; j++)
-		{
-			cout << arr_dual[i][j] << "\t";
-		}
-		cout << endl;
-	}
-		
-	
-}
 
 void PushBack(int*& arr, int& n, const int number)
 {
@@ -278,9 +333,9 @@ void PushBack(int*& arr, int& n, const int number)
 	//cout << &arr << endl; //проверка адреса массива - УСПЕШНО, работаем именно с одним и тем же массивом
 }
 
-int** Push_Row_Back(int** arr_dual, int &ROWS, const int COLS)
+int** Push_Row_Back(int** arr_dual, int& ROWS, const int COLS)
 {
-	int** buffer = new int*[++ROWS];
+	int** buffer = new int* [++ROWS];
 	for (int i = 0; i < ROWS - 1; i++) buffer[i] = arr_dual[i];
 	delete[] arr_dual;
 	arr_dual = buffer;
@@ -303,7 +358,7 @@ void Push_Col_Back(int** arr_dual, const int ROWS, int& COLS)
 	}
 	COLS++;
 }
-	
+
 
 void PushFront(int*& arr, int& n, const int number_index)
 {
@@ -335,7 +390,7 @@ void Insert(int*& arr, int& n, const int number_index, const int index)
 	bool exam = true;
 	for (int i = 0, j = 0; i < n; i++, j++)
 	{
-		if ((i == index - 1)&&exam)
+		if ((i == index - 1) && exam)
 		{
 			buffer[j] = number_index;
 			i--;
@@ -429,7 +484,7 @@ void Pop_Cols_Back(int** arr_dual, const int ROWS, int& COLS)
 int** Pop_Row_Back(int** arr_dual, int& ROWS, const int COLS)
 {
 	delete[] arr_dual[ROWS - 1];
-	int** buffer = new int*[--ROWS];
+	int** buffer = new int* [--ROWS];
 	for (int i = 0; i < ROWS; i++) buffer[i] = arr_dual[i];
 	delete[] arr_dual;
 	return buffer;
@@ -437,8 +492,7 @@ int** Pop_Row_Back(int** arr_dual, int& ROWS, const int COLS)
 
 int** Pop_Row_Front(int** arr_dual, int& ROWS, const int COLS)
 {
-	delete[] arr_dual[ROWS - 1];
-	int** buffer = new int*[--ROWS];
+	int** buffer = new int* [--ROWS];
 	for (int i = 0; i < ROWS; i++)buffer[i] = arr_dual[i + 1];
 	delete[] arr_dual;
 	return buffer;
@@ -462,7 +516,7 @@ void Erase(int*& arr, int& n, const int index)
 	bool exam = true;
 	for (int i = 0, j = 0; i < n; i++, j++)
 	{
-		if ((i == index - 1) && exam) 
+		if ((i == index - 1) && exam)
 		{
 			exam = false;
 			j--;
