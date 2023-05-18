@@ -5,18 +5,7 @@
 //#define PREFORMANCE_TEST
 //#define TWO_DYNAMIC_ARRAY
 
-void FillRand(double** arr_dual, int ROWS, const int COLS);
-void FillRand(int** arr_dual, int ROWS, const int COLS);
-void FillRand(char** arr_dual, int ROWS, const int COLS);
-
-template <typename T> void Print(T** arr, const int ROWS, const int COLS);
-
-template <typename T> T** Push_Row_Back(T** arr_dual, int& ROWS, const int COLS);
-
-template <typename T> void Push_Col_Back(T** arr_dual, const int ROWS, int& COLS);
-
-int** Push_Row_Front(int**& arr_dual, int& ROWS, const int COLS);
-void Push_Col_Front(int** arr_dual, const int COLS, int& ROWS);
+void Push_Col_Front(int** arr_dual, const int ROWS, int& COLS);
 
 int** Insert_Row(int** arr_dual, int& ROWS, const int COLS, const int index);
 void Insert_Col(int** arr_dual, const int ROWS, int& COLS, const int index);
@@ -139,7 +128,7 @@ void main()
 	Push_Col_Back(arr_dual, rows, cols);
 	Print(arr_dual, rows, cols);
 	system("PAUSE");
-#ifdef TWO_DYNAMIC_ARRAY
+
 	//------------------------------------------------------------------------------------------------------------
 	// Добавляем пустую строку в начало динамического массива
 
@@ -148,6 +137,7 @@ void main()
 	Print(arr_dual, rows, cols);
 	system("PAUSE");
 
+#ifdef TWO_DYNAMIC_ARRAY
 	//---------------------------------------------------------------------------------------------------------
 	// добавляет пустой столбец в начало двумерного динамического массива
 
@@ -236,61 +226,16 @@ void main()
 	//Clear(arr_dual, rows);
 }
 
-template <typename T> void Print(T** arr_dual, const int ROWS, const int COLS)
+void Push_Col_Front(int** arr_dual, const int ROWS, int& COLS)
 {
 	for (int i = 0; i < ROWS; i++)
 	{
-		for (int j = 0; j < COLS; j++)
-		{
-			cout << arr_dual[i][j] << "\t";
-		}
-		cout << endl;
-	}
-}
-
-void Clear(int**& arr_dual, const int ROWS)
-{
-	for (int i = 0; i < ROWS; i++)
-	{
+		int* buffer = new int[COLS + 1] {};
+		for (int j = 0; j < COLS; j++) buffer[j + 1] = arr_dual[i][j];
 		delete[] arr_dual[i];
-	}delete[] arr_dual;
-	arr_dual = nullptr;
-}
-
-template <typename T> T** Push_Row_Back(T** arr_dual, int& ROWS, const int COLS)
-{
-	T** buffer = new T* [++ROWS];
-	for (int i = 0; i < ROWS - 1; i++) buffer[i] = arr_dual[i];
-	delete[] arr_dual;
-	arr_dual = buffer;
-	arr_dual[ROWS - 1] = new T[COLS] {};
-	return arr_dual;
-}
-
-template <typename T> void Push_Col_Back(T** arr_dual, const int ROWS, int& COLS)
-{
-	for (int i = 0; i < ROWS; i++)
-	{
-		//1) Создаем буферную строку:
-		T* buffer = new T[COLS + 1] {};
-		//2) Копируем все содержимое из исходной строки в буферную
-		for (int j = 0; j < COLS; j++)buffer[j] = arr_dual[i][j];
-		//3) Удаляем исходную строку
-		delete[] arr_dual[i];
-		//4) Записываем адрес новой строки в массив указателей
 		arr_dual[i] = buffer;
 	}
 	COLS++;
-}
-
-int** Push_Row_Front(int**& arr_dual, int& ROWS, const int COLS)
-{
-	int** buffer = new int* [++ROWS];
-	for (int i = 0; i < ROWS - 1; i++) buffer[i + 1] = arr_dual[i];
-	delete[] arr_dual;
-	arr_dual = buffer;
-	arr_dual[0] = new int[COLS] {};
-	return arr_dual;
 }
 
 int** Insert_Row(int** arr_dual, int& ROWS, const int COLS, const int index)
@@ -317,17 +262,6 @@ void Insert_Col(int** arr_dual, const int ROWS, int& COLS, const int index)
 	COLS++;
 }
 
-void Push_Col_Front(int** arr_dual, const int ROWS, int& COLS)
-{
-	for (int i = 0; i < ROWS; i++)
-	{
-		int* buffer = new int[COLS + 1] {};
-		for (int j = 0; j < COLS; j++) buffer[j + 1] = arr_dual[i][j];
-		delete[] arr_dual[i];
-		arr_dual[i] = buffer;
-	}
-	COLS++;
-}
 
 void Pop_Cols_Back(int** arr_dual, const int ROWS, int& COLS)
 {
@@ -391,4 +325,13 @@ void Erase_Cols(int** arr_dual, const int ROWS, int& COLS, const int index)
 		arr_dual[i] = buffer;
 	}
 	COLS--;
+}
+
+void Clear(int**& arr_dual, const int ROWS)
+{
+	for (int i = 0; i < ROWS; i++)
+	{
+		delete[] arr_dual[i];
+	}delete[] arr_dual;
+	arr_dual = nullptr;
 }
