@@ -5,7 +5,7 @@
 //#define PREFORMANCE_TEST
 //#define TWO_DYNAMIC_ARRAY
 
-void Erase_Cols(int** arr_dual, const int ROWS, int& COLS, const int index);
+template <typename T> void Erase_Cols(T** arr_dual, const int ROWS, int& COLS, const int index);
 
 void Clear(int**& arr_dual, const int ROWS);
 
@@ -188,7 +188,6 @@ void main()
 	arr_dual = Erase_Row(arr_dual, rows, cols, index_rows);
 	Print(arr_dual, rows, cols);
 
-#ifdef TWO_DYNAMIC_ARRAY
 	//--------------------------------------------------------------------------------------------------------
 	//удаляет столбец из двумерного динамического массива по заданному индексу
 	cout << endl << "Удаляем столбец из двумерного динамического массива по заданному индексу" << endl;
@@ -197,6 +196,7 @@ void main()
 	cout << "Введите индекс удаляемого столбца из двумерного динамического массива от 0 до " << cols - 1 << " : "; cin >> index_cols;
 	Erase_Cols(arr_dual, rows, cols, index_cols);
 	Print(arr_dual, rows, cols);
+#ifdef TWO_DYNAMIC_ARRAY
 
 #endif TWO_DYNAMIC_ARRAY
 
@@ -215,11 +215,11 @@ void main()
 	//Clear(arr_dual, rows);
 }
 
-void Erase_Cols(int** arr_dual, const int ROWS, int& COLS, const int index)
+template <typename T> void Erase_Cols(T** arr_dual, const int ROWS, int& COLS, const int index)
 {
 	for (int i = 0; i < ROWS; i++)
 	{
-		int* buffer = new int[COLS - 1];
+		T* buffer = new T[COLS - 1];
 		for (int j = 0; j < index; j++) buffer[j] = arr_dual[i][j];
 		for (int j = index; j < COLS - 1; j++) buffer[j] = arr_dual[i][j + 1];
 		delete[] arr_dual[i];
