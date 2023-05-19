@@ -11,7 +11,7 @@ using namespace std;
 
 #define TWO_DYNAMIC_ARRAY
 
-template <typename T> T** Allocate(const int ROWS, const int COLS);
+int** Allocate(const int ROWS, const int COLS);
 void Clear(int** &arr_dual, const int ROWS);
 
 void FillRand(int arr[], const int n);
@@ -254,7 +254,7 @@ void main()
 #endif PREFORMANCE_TEST
 	Clear(arr_dual, rows);
 }
-template <typename T> T**& Allocate(const int ROWS, const int COLS)
+int** Allocate(const int ROWS, const int COLS)
 {
 	int** arr_dual = new int* [ROWS];
 	for (int i = 0; i < ROWS; i++)
