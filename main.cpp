@@ -5,8 +5,6 @@
 //#define PREFORMANCE_TEST
 #define TWO_DYNAMIC_ARRAY
 
-template <typename T> void Clear(T**& arr_dual, const int ROWS);
-
 void main()
 {
 	setlocale(LC_ALL, "Russian");
@@ -211,13 +209,4 @@ void main()
 
 #endif PREFORMANCE_TEST
 	Clear(arr_dual, rows);
-}
-
-template <typename T> void Clear(T**& arr_dual, const int ROWS)
-{
-	for (int i = 0; i < ROWS; i++)
-	{
-		delete[] arr_dual[i];
-	}delete[] arr_dual;
-	arr_dual = nullptr;
 }
