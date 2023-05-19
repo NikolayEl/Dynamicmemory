@@ -8,20 +8,34 @@
 void main()
 {
 	setlocale(LC_ALL, "Russian");
-	//int n;
-	//cout << "Введите размер массива: "; cin >> n;
-	//int* arr = new int[n];
-	//FillRand(arr, n);
-	//cout << "Исходный массив:" << endl;
-	//Print(arr, n);
-	//cout << "Конец исходного массива" << endl << endl;
-
-
+	int n;
+	int answer;
+	typedef int DataType;
+	cout << "Выберите 1-int, 2-double, 3-char: "; cin >> answer;
+	if (answer == 1)
+	{
+		typedef int &DataType;
+	} else if (answer == 2)
+	{
+		typedef double &DataType;
+	} else
+	{
+		typedef char &DataType;
+	}
+	
 #ifdef ONE_DYNAMIC_ARRAY
+	cout << "Введите размер массива: "; cin >> n;
+	DataType* arr = new DataType[n];
+	FillRand(arr, n);
+	cout << "Исходный массив:" << endl;
+	Print(arr, n);
+	cout << "Конец исходного массива" << endl << endl;
+
+
 
 	// -----------------------------------------------------------------------
 	// Добавляем элемент в конец массива
-	int value;
+	DataType value;
 	cout << "Введите добавляемый элемент: "; cin >> value;
 	PushBack(arr, n, value);
 	//cout << &arr << endl; //проверка адреса массива - УСПЕШНО, работаем именно с одним и тем же массивом
@@ -31,7 +45,7 @@ void main()
 	//-------------------------------------------------------------------------
 	// Добавляем элемент в начало массива
 
-	int number_front;
+	DataType number_front;
 	cout << "Введите число, добавляемое в начало: "; cin >> number_front;
 	PushFront(arr, n, number_front);
 	cout << "Добавили в начало массива число " << number_front << ":" << endl;
@@ -40,7 +54,8 @@ void main()
 	//-------------------------------------------------------------------------
 	// Добавляем значение по указанному индексу
 
-	int number_index, index;
+	int index;
+	DataType number_index;
 	cout << "Введите число, которое вы хотите добавить: "; cin >> number_index;
 	cout << "Введите номер положения числа в массиве ,куда вы хотите его добавить от 1 до " << n << " :"; cin >> index;
 	Insert(arr, n, number_index, index);
@@ -76,9 +91,7 @@ void main()
 	cout << "Введите кол-во строк: "; cin >> rows;
 	cout << "Введите кол-во столбцов: "; cin >> cols;
 
-	double** arr_dual = DoubleAllocate(rows, cols);
-	//int** arr_dual = IntAllocate(rows, cols);
-	//char** arr_dual = CharAllocate(rows, cols);
+	DataType** arr_dual = Allocate<DataType>(rows, cols);
 	FillRand(arr_dual, rows, cols);
 	Print(arr_dual, rows, cols);
 

@@ -1,6 +1,124 @@
 #include "dmemory.h"
 
+template <typename T> void Print(T arr[], const int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		cout << arr[i] << "\t";
+	}
+	cout << endl;
+}
+
+template <typename T> void PushFront(T*& arr, int& n, const T number_front)
+{
+	T* buffer = new T[n + 1];
+	buffer[0] = number_front;
+	for (int i = 0; i < n; i++)
+	{
+		buffer[i + 1] = arr[i];
+	}
+	delete[] arr;
+	arr = buffer;
+	buffer = nullptr;
+	n++;
+}
+
+template <typename T> void PushBack(T*& arr, int& n, const T number)
+{
+	T* buffer = new T[n + 1];
+	for (int i = 0; i < n; i++)
+	{
+		buffer[i] = arr[i];
+	}
+	delete[] arr;
+	arr = buffer;
+	buffer = nullptr;
+	arr[n] = number;
+	n++;
+	//cout << &arr << endl; //проверка адреса массива - УСПЕШНО, работаем именно с одним и тем же массивом
+}
+
+template <typename T> void Insert(T*& arr, int& n, T number_index, const int index)
+{
+	T* buffer = new T[n + 1];
+	bool exam = true;
+	for (int i = 0, j = 0; i < n; i++, j++)
+	{
+		if ((i == index - 1) && exam)
+		{
+			buffer[j] = number_index;
+			i--;
+			exam = false;
+			continue;
+		}
+		else buffer[j] = arr[i];
+	}
+	delete[] arr;
+	arr = buffer;
+	buffer = nullptr;
+	n++;
+}
+
+template <typename T> void Erase(T*& arr, int& n, const int index)
+{
+	T* buffer = new T[n - 1];
+	bool exam = true;
+	for (int i = 0, j = 0; i < n; i++, j++)
+	{
+		if ((i == index - 1) && exam)
+		{
+			exam = false;
+			j--;
+			continue;
+		}
+		buffer[j] = arr[i];
+	}
+	delete[] arr;
+	arr = buffer;
+	buffer = nullptr;
+	n--;
+	//cout << arr[n] << endl; //Проверка что выбранный элемент действительно удален и в памяти больше нет чисел из массива!
+}
+
+template <typename T> void PopBack(T*& arr, int& n)
+{
+	T* buffer = new T[n - 1];
+	for (int i = 0; i < n - 1; i++)
+	{
+		buffer[i] = arr[i];
+	}
+	delete[] arr;
+	arr = buffer;
+	buffer = nullptr;
+	n--;
+	//cout << arr[n] << endl; //Проверка что последний элемент действительно удален!
+}
+
+template <typename T> void PopFront(T*& arr, int& n)
+{
+	T* buffer = new T[n - 1];
+	for (int i = 0; i < n - 1; i++)
+	{
+		buffer[i] = arr[i + 1];
+	}
+	delete[] arr;
+	arr = buffer;
+	buffer = nullptr;
+	n--;
+	//cout << arr[n] << endl; //Проверка что первый элемент действительно удален и в памяти больше нет чисел из массива!
+}
+
 //Функции двумерного динамического массива с шаблоном (подключаемые в main)
+
+template <typename T> T** Allocate(const int ROWS, const int COLS)
+{
+	T** arr_dual = new T* [ROWS];
+	for (int i = 0; i < ROWS; i++)
+	{
+		arr_dual[i] = new T[COLS];
+	}
+	return arr_dual;
+}
 
 template <typename T> void Print(T** arr_dual, const int ROWS, const int COLS)
 {
