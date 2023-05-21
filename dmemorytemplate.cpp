@@ -2,110 +2,50 @@
 
 template <typename T> void Print(T arr[], const int n)
 {
-	for (int i = 0; i < n; i++)
-	{
-		cout << arr[i] << "\t";
-	}
+	for (int i = 0; i < n; i++) cout << arr[i] << "\t";
 	cout << endl;
 }
 
 template <typename T> void PushFront(T*& arr, int& n, const T number_front)
 {
-	T* buffer = new T[n + 1];
-	buffer[0] = number_front;
-	for (int i = 0; i < n; i++)
-	{
-		buffer[i + 1] = arr[i];
-	}
-	delete[] arr;
-	arr = buffer;
-	buffer = nullptr;
-	n++;
+	Insert(arr, n, number_front, 0);
 }
 
 template <typename T> void PushBack(T*& arr, int& n, const T number)
 {
-	T* buffer = new T[n + 1];
-	for (int i = 0; i < n; i++)
-	{
-		buffer[i] = arr[i];
-	}
-	delete[] arr;
-	arr = buffer;
-	buffer = nullptr;
-	arr[n] = number;
-	n++;
-	//cout << &arr << endl; //проверка адреса массива - УСПЕШНО, работаем именно с одним и тем же массивом
+	Insert(arr, n, number, n);
 }
 
 template <typename T> void Insert(T*& arr, int& n, T number_index, const int index)
 {
 	T* buffer = new T[n + 1];
-	bool exam = true;
-	for (int i = 0, j = 0; i < n; i++, j++)
-	{
-		if ((i == index - 1) && exam)
-		{
-			buffer[j] = number_index;
-			i--;
-			exam = false;
-			continue;
-		}
-		else buffer[j] = arr[i];
-	}
+	for (int i = 0; i < index; i++) buffer[i] = arr[i];
+	buffer[index] = number_index;
+	for (int i = index + 1; i < n + 1; i++) buffer[i] = arr[i - 1];
 	delete[] arr;
-	arr = buffer;
-	buffer = nullptr;
 	n++;
+	arr = buffer;
 }
+
 
 template <typename T> void Erase(T*& arr, int& n, const int index)
 {
 	T* buffer = new T[n - 1];
-	bool exam = true;
-	for (int i = 0, j = 0; i < n; i++, j++)
-	{
-		if ((i == index - 1) && exam)
-		{
-			exam = false;
-			j--;
-			continue;
-		}
-		buffer[j] = arr[i];
-	}
+	for (int i = 0; i < index; i++) buffer[i] = arr[i];
+	for (int i = index + 1; i < n; i++) buffer[i - 1] = arr[i];
 	delete[] arr;
 	arr = buffer;
-	buffer = nullptr;
 	n--;
-	//cout << arr[n] << endl; //Проверка что выбранный элемент действительно удален и в памяти больше нет чисел из массива!
 }
 
 template <typename T> void PopBack(T*& arr, int& n)
 {
-	T* buffer = new T[n - 1];
-	for (int i = 0; i < n - 1; i++)
-	{
-		buffer[i] = arr[i];
-	}
-	delete[] arr;
-	arr = buffer;
-	buffer = nullptr;
-	n--;
-	//cout << arr[n] << endl; //Проверка что последний элемент действительно удален!
+	Erase(arr, n, n - 1);
 }
 
 template <typename T> void PopFront(T*& arr, int& n)
 {
-	T* buffer = new T[n - 1];
-	for (int i = 0; i < n - 1; i++)
-	{
-		buffer[i] = arr[i + 1];
-	}
-	delete[] arr;
-	arr = buffer;
-	buffer = nullptr;
-	n--;
-	//cout << arr[n] << endl; //Проверка что первый элемент действительно удален и в памяти больше нет чисел из массива!
+	Erase(arr, n, 0);
 }
 
 //Функции двумерного динамического массива с шаблоном (подключаемые в main)

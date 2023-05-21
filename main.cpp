@@ -11,7 +11,7 @@ void main()
 	int n;
 	int answer;
 	typedef int DataType;
-	cout << "Выберите 1-int, 2-double, 3-char: "; cin >> answer;
+	/*cout << "Выберите 1-int, 2-double, 3-char: "; cin >> answer;
 	if (answer == 1)
 	{
 		typedef int*& DataType;
@@ -21,7 +21,7 @@ void main()
 	} else
 	{
 		typedef char *&DataType;
-	}
+	}*/
 	
 #ifdef ONE_DYNAMIC_ARRAY
 	cout << "Введите размер массива: "; cin >> n;
@@ -57,7 +57,7 @@ void main()
 	int index;
 	DataType number_index;
 	cout << "Введите число, которое вы хотите добавить: "; cin >> number_index;
-	cout << "Введите номер положения числа в массиве ,куда вы хотите его добавить от 1 до " << n << " :"; cin >> index;
+	cout << "Введите номер положения числа в массиве ,куда вы хотите его добавить от 0 до " << n << " :"; cin >> index;
 	Insert(arr, n, number_index, index);
 	cout << "Добавили число " << number_index << " по индексу " << index << ":" << endl;
 	Print(arr, n); cout << endl;
@@ -77,7 +77,7 @@ void main()
 	//--------------------------------------------------------------------------
 	// Удаляем элемент из массива по указанному индексу
 	int index_erase;
-	cout << "Укажите индекс удаляемого числа (от 1 до 5): "; cin >> index_erase;
+	cout << "Укажите индекс удаляемого числа (от 0 до " << n - 1 << "): "; cin >> index_erase;
 	Erase(arr, n, index_erase);
 	cout << "Удалили число по индексу " << index_erase << ":" << endl;
 	Print(arr, n); cout << endl;
@@ -85,6 +85,7 @@ void main()
 	delete[] arr;
 #endif ONE_DYNAMIC_ARRAY
 
+#ifdef TWO_DYNAMIC_ARRAY
 	//---------------------------------------------------------------------------------------------------------------
 	// Двумерные динамические массивы
 	int rows, cols;
@@ -95,7 +96,6 @@ void main()
 	FillRand(arr_dual, rows, cols);
 	Print(arr_dual, rows, cols);
 
-#ifdef TWO_DYNAMIC_ARRAY
 
 	// -------------------------------------------------------------------------------------------------------------
 	// Вывод при помощи арифметики указателей
@@ -220,6 +220,6 @@ void main()
 	system("PAUSE");
 
 
-#endif PREFORMANCE_TEST
 	Clear(arr_dual, rows);
+#endif PREFORMANCE_TEST
 }
