@@ -1,29 +1,32 @@
 ﻿#include "dmemory.h"
 #include "dmemorytemplate.cpp"
 
-//#define ONE_DYNAMIC_ARRAY
+#define ONE_DYNAMIC_ARRAY
 //#define PREFORMANCE_TEST
-#define TWO_DYNAMIC_ARRAY
+//#define TWO_DYNAMIC_ARRAY
 
 void main()
 {
 	setlocale(LC_ALL, "Russian");
+#ifdef ONE_DYNAMIC_ARRAY
 	int n;
 	int answer;
-	typedef int DataType;
-	/*cout << "Выберите 1-int, 2-double, 3-char: "; cin >> answer;
+	typedef double DataType;
+	cout << "Выберите 1-int, 2-double, 3-char: "; cin >> answer;
 	if (answer == 1)
 	{
+		fpreset;
 		typedef int*& DataType;
 	} else if (answer == 2)
 	{
+		fpreset;
 		typedef double *&DataType;
 	} else
 	{
+		fpreset;
 		typedef char *&DataType;
-	}*/
+	}
 	
-#ifdef ONE_DYNAMIC_ARRAY
 	cout << "Введите размер массива: "; cin >> n;
 	DataType* arr = new DataType[n];
 	FillRand(arr, n);
