@@ -14,13 +14,13 @@ void main()
 	cout << "Выберите 1-int, 2-double, 3-char: "; cin >> answer;
 	if (answer == 1)
 	{
-		typedef int &DataType;
+		typedef int*& DataType;
 	} else if (answer == 2)
 	{
-		typedef double &DataType;
+		typedef double *&DataType;
 	} else
 	{
-		typedef char &DataType;
+		typedef char *&DataType;
 	}
 	
 #ifdef ONE_DYNAMIC_ARRAY
