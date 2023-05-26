@@ -11,17 +11,7 @@ void main()
 	int n;
 	int answer;
 	typedef int DataType;
-	cout << "Выберите 1-int, 2-double, 3-char: "; cin >> answer;
-	if (answer == 1)
-	{
-		typedef int &DataType;
-	} else if (answer == 2)
-	{
-		typedef double &DataType;
-	} else
-	{
-		typedef char &DataType;
-	}
+
 	
 #ifdef ONE_DYNAMIC_ARRAY
 	cout << "Введите размер массива: "; cin >> n;
