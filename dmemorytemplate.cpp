@@ -134,7 +134,7 @@ template <typename T> void Print(T** arr_dual, const int ROWS, const int COLS)
 
 template <typename T> T** Push_Row_Back(T** arr_dual, int& ROWS, const int COLS)
 {
-	PushBack(arr_dual, ROWS, new T[COLS]{});
+	PushBack(arr_dual, ROWS, new T[COLS]{}); //функция pushback переопределяет массив указателей
 	//T** buffer = new T * [++ROWS];
 	//for (int i = 0; i < ROWS - 1; i++) buffer[i] = arr_dual[i];
 	//delete[] arr_dual;
@@ -147,14 +147,18 @@ template <typename T> void Push_Col_Back(T** arr_dual, const int ROWS, int& COLS
 {
 	for (int i = 0; i < ROWS; i++)
 	{
-		//1) Создаем буферную строку:
-		T* buffer = new T[COLS + 1]{};
-		//2) Копируем все содержимое из исходной строки в буферную
-		for (int j = 0; j < COLS; j++)buffer[j] = arr_dual[i][j];
-		//3) Удаляем исходную строку
-		delete[] arr_dual[i];
-		//4) Записываем адрес новой строки в массив указателей
-		arr_dual[i] = buffer;
+		PushBack(arr_dual[i], COLS, T());
+		COLS--; //компенсируем увеличение на один столбец
+		//------------------------------------------------
+		////1) Создаем буферную строку:
+		//T* buffer = new T[COLS + 1]{};
+		////2) Копируем все содержимое из исходной строки в буферную
+		//for (int j = 0; j < COLS; j++)buffer[j] = arr_dual[i][j];
+		////3) Удаляем исходную строку
+		//delete[] arr_dual[i];
+		////4) Записываем адрес новой строки в массив указателей
+		//arr_dual[i] = buffer;
+		//--------------------------------------------------
 	}
 	COLS++;
 }
@@ -183,12 +187,14 @@ template <typename T> void Push_Col_Front(T** arr_dual, const int ROWS, int& COL
 
 template <typename T> T** Insert_Row(T** arr_dual, int& ROWS, const int COLS, const int index)
 {
-	T** buffer = new T * [++ROWS];
-	for (int i = 0; i < index; i++)buffer[i] = arr_dual[i];
-	buffer[index] = new T[COLS]{};
-	for (int i = index + 1; i < ROWS; i++)buffer[i] = arr_dual[i - 1];
-	delete[] arr_dual;
-	arr_dual = buffer;
+	//T** buffer = new T * [++ROWS];
+	//for (int i = 0; i < index; i++)buffer[i] = arr_dual[i];
+	//buffer[index] = new T[COLS]{};
+	//for (int i = index + 1; i < ROWS; i++)buffer[i] = arr_dual[i - 1];
+	//delete[] arr_dual;
+	//arr_dual = buffer;
+	//return arr_dual;
+	Insert(arr_dual, ROWS, new T[COLS]{}, index);
 	return arr_dual;
 }
 
@@ -207,21 +213,26 @@ template <typename T> void Insert_Col(T** arr_dual, const int ROWS, int& COLS, c
 
 template <typename T> T** Pop_Row_Back(T** arr_dual, int& ROWS, const int COLS)
 {
+	//1) Удаляем последнюю строку
 	delete[] arr_dual[ROWS - 1];
-	T** buffer = new T * [--ROWS];
-	for (int i = 0; i < ROWS; i++) buffer[i] = arr_dual[i];
-	delete[] arr_dual;
-	return buffer;
+	//2) Переопределяем массив указателей
+	//T** buffer = new T * [--ROWS];
+	//for (int i = 0; i < ROWS; i++) buffer[i] = arr_dual[i];
+	//delete[] arr_dual;
+	PopBack(arr_dual, ROWS);
+	return arr_dual;
 }
 
 template <typename T> void Pop_Cols_Back(T** arr_dual, const int ROWS, int& COLS)
 {
 	for (int i = 0; i < ROWS; i++)
 	{
-		T* buffer = new T[COLS - 1];
-		for (int j = 0; j < COLS - 1; j++) buffer[j] = arr_dual[i][j];
-		delete[] arr_dual[i];
-		arr_dual[i] = buffer;
+		PopBack(arr_dual[i], COLS);
+		COLS++;
+		//T* buffer = new T[COLS - 1];
+		//for (int j = 0; j < COLS - 1; j++) buffer[j] = arr_dual[i][j];
+		//delete[] arr_dual[i];
+		//arr_dual[i] = buffer;
 	}
 	COLS--;
 }
