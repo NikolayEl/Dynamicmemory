@@ -1,9 +1,9 @@
 ﻿#include "dmemory.h"
 #include "dmemorytemplate.cpp"
 
-//#define ONE_DYNAMIC_ARRAY
+#define ONE_DYNAMIC_ARRAY
 //#define PREFORMANCE_TEST
-#define TWO_DYNAMIC_ARRAY
+//#define TWO_DYNAMIC_ARRAY
 
 void main()
 {
@@ -67,7 +67,7 @@ void main()
 	//--------------------------------------------------------------------------
 	// Удаляем элемент из массива по указанному индексу
 	int index_erase;
-	cout << "Укажите индекс удаляемого числа (от 1 до 5): "; cin >> index_erase;
+	cout << "Укажите индекс удаляемого числа (от 0 до " << n - 1 << ") :"; cin >> index_erase;
 	Erase(arr, n, index_erase);
 	cout << "Удалили число по индексу " << index_erase << ":" << endl;
 	Print(arr, n); cout << endl;
