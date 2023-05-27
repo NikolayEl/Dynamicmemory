@@ -1,9 +1,9 @@
 ﻿#include "dmemory.h"
 #include "dmemorytemplate.cpp"
 
-#define ONE_DYNAMIC_ARRAY
+//#define ONE_DYNAMIC_ARRAY
 //#define PREFORMANCE_TEST
-//#define TWO_DYNAMIC_ARRAY
+#define TWO_DYNAMIC_ARRAY
 
 void main()
 {

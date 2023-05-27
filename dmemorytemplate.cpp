@@ -32,21 +32,10 @@ template <typename T> void Insert(T*& arr, int& n, T number_index, const int ind
 template <typename T> void Erase(T*& arr, int& n, const int index)
 {
 	T* buffer = new T[--n];
-	bool exam = true;
-	for (int i = 0, j = 0; i < n + 1; i++, j++)
-	{
-		if ((i == index) && exam)
-		{
-			exam = false;
-			j--;
-			continue;
-		}
-		buffer[j] = arr[i];
-	}
+	for (int i = 0; i < index; i++) buffer[i] = arr[i];
+	for (int i = index; i < n; i++) buffer[i] = arr[i + 1];
 	delete[] arr;
 	arr = buffer;
-	buffer = nullptr;
-	//cout << arr[n] << endl; //ѕроверка что выбранный элемент действительно удален и в пам€ти больше нет чисел из массива!
 }
 
 template <typename T> void PopBack(T*& arr, int& n)
