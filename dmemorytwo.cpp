@@ -5,21 +5,14 @@ void FillRand(double** arr_dual, int ROWS, const int COLS)
 
 	for (int i = 0; i < ROWS; i++)
 	{
-		for (int j = 0; j < COLS; j++)
-		{
-			arr_dual[i][j] = rand() % (ROWS * COLS);
-			arr_dual[i][j] /= 10;
-		}
+		FillRand(arr_dual[i], COLS);
 	}
 }
 void FillRand(int** arr_dual, int ROWS, const int COLS)
 {
 	for (int i = 0; i < ROWS; i++)
 	{
-		for (int j = 0; j < COLS; j++)
-		{
-			arr_dual[i][j] = rand() % (ROWS * COLS);
-		}
+		FillRand(arr_dual[i], COLS);
 	}
 }
 
@@ -27,9 +20,6 @@ void FillRand(char** arr_dual, int ROWS, const int COLS)
 {
 	for (int i = 0; i < ROWS; i++)
 	{
-		for (int j = 0; j < COLS; j++)
-		{
-			arr_dual[i][j] = rand() % (ROWS * COLS);
-		}
+		FillRand(arr_dual[i], COLS);
 	}
 }

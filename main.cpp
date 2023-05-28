@@ -1,7 +1,7 @@
 ﻿#include "dmemory.h"
 #include "dmemorytemplate.cpp"
 
-//#define ONE_DYNAMIC_ARRAY
+#define ONE_DYNAMIC_ARRAY
 //#define PREFORMANCE_TEST
 #define TWO_DYNAMIC_ARRAY
 
@@ -47,7 +47,7 @@ void main()
 	int index;
 	DataType number_index;
 	cout << "Введите число, которое вы хотите добавить: "; cin >> number_index;
-	cout << "Введите номер положения числа в массиве ,куда вы хотите его добавить от 1 до " << n << " :"; cin >> index;
+	cout << "Введите номер положения числа в массиве ,куда вы хотите его добавить от 0 до " << n << " :"; cin >> index;
 	Insert(arr, n, number_index, index);
 	cout << "Добавили число " << number_index << " по индексу " << index << ":" << endl;
 	Print(arr, n); cout << endl;
